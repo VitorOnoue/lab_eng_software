@@ -13,15 +13,26 @@ const Relatorios = () => {
   }, []);
 
   return (
-    <div>
+    <div className="page">
       <h2>Relatórios</h2>
-      <ul>
-        {reports.map((report) => (
-          <li key={report.id}>
-            {report.nome} - {report.status}
-          </li>
-        ))}
-      </ul>
+      <table className="reports-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {reports.map((report) => (
+            <tr key={report.id}>
+              <td>{report.id}</td>
+              <td>{report.nome}</td>
+              <td>{report.status}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

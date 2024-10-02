@@ -24,7 +24,7 @@ const Upload = () => {
   };
 
   return (
-    <div>
+    <div className="page upload-form">
       <h2>Upload de Contas</h2>
       <form onSubmit={handleSubmit}>
         <input type="file" onChange={handleFileChange} />
