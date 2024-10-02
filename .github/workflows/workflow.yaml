@@ -15,5 +15,6 @@ jobs:
       - name: install + build + test
         run: |
           npm install
+          npm install react-router-dom
           npm run build
           npm run test
