@@ -21,6 +21,7 @@ const Relatorios = () => {
             <th>ID</th>
             <th>Nome</th>
             <th>Status</th>
+            <th>Dados</th>
           </tr>
         </thead>
         <tbody>
