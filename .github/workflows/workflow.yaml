@@ -1,0 +1,19 @@
+name: CI-projeto-prod
+
+on: push
+
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20.
+      - name: install + build + test
+        run: |
+          npm install
+          npm run build
+          npm run test
