@@ -3,55 +3,55 @@ body {
     font-family: 'Roboto', Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4; /* Cor de fundo clara */
+    background-color: #f4f4f4; 
 }
 
 .container {
     max-width: 1200px;
-    margin: 0 auto; /* Centraliza o container */
-    padding: 20px; /* Espaçamento ao redor do conteúdo */
+    margin: 0 auto; 
+    padding: 20px; 
 }
 
 /* Estilos da Barra de Navegação */
 .navbar {
     background-color: #ffffff;
     display: flex;
-    justify-content: center; /* Centraliza os links */
+    justify-content: center; 
     padding: 15px 0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
 }
 
 .navbar a {
     margin: 0 20px;
     text-decoration: none;
     color: #333;
-    transition: color 0.3s ease; /* Transição suave ao passar o mouse */
+    transition: color 0.3s ease; 
 }
 
 .navbar a:hover {
-    color: #007bff; /* Altera a cor ao passar o mouse */
+    color: #007bff; 
 }
 
 .navbar .active {
-    color: #007bff; /* Destaca o link ativo */
-    font-weight: bold; /* Deixa o link ativo em negrito */
+    color: #007bff; 
+    font-weight: bold; 
 }
 
-/* Estilos da Página */
+
 .page {
     background-color: white;
     padding: 20px;
-    border-radius: 8px; /* Cantos arredondados */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    border-radius: 8px; 
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
 }
 
-/* Estilos da Página de Upload de Contas */
+
 .upload-form {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 80vh; /* Centraliza verticalmente */
+    height: 80vh; 
 }
 
 .upload-form input[type="file"] {
@@ -68,17 +68,17 @@ body {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: box-shadow 0.3s ease; /* Transição suave de sombra */
+    transition: box-shadow 0.3s ease;
 }
 
 .upload-form button:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Efeito de sombra 3D */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
 
 /* Estilos da Página de Relatórios */
 .reports-table {
     width: 100%;
-    border-collapse: collapse; /* Remove o espaço entre as células */
+    border-collapse: collapse; 
 }
 
 .reports-table th, .reports-table td {
@@ -87,17 +87,17 @@ body {
 }
 
 .reports-table tr:nth-child(even) {
-    background-color: #f9f9f9; /* Cinza claro para linhas pares */
+    background-color: #f9f9f9; 
 }
 
 .reports-table tr:hover {
-    background-color: #e0e0e0; /* Efeito de hover para linhas */
+    background-color: #e0e0e0; 
 }
 
 /* Estilos Responsivos */
 @media (max-width: 768px) {
     .navbar {
-        flex-direction: column; /* Links empilhados verticalmente */
+        flex-direction: column; 
     }
 
     .navbar a {
@@ -105,6 +105,6 @@ body {
     }
 
     .upload-form {
-        height: auto; /* Ajusta a altura para telas menores */
+        height: auto; 
     }
 }
