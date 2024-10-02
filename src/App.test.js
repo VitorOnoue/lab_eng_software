@@ -1,13 +1,14 @@
 import { render, screen } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom'; // Import BrowserRouter
 import App from './App';
 
-test('renders learn react link', () => {
-  render(
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  );
-  const linkElement = screen.getByText(/learn react/i);
+test('renders upload link', () => {
+  render(<App />); // Remova o BrowserRouter, já que o App já contém o Router
+  const linkElement = screen.getByText(/Upload de Contas/i); // Verifique algo que realmente existe no App
+  expect(linkElement).toBeInTheDocument();
+});
+
+test('renders relatorios link', () => {
+  render(<App />); // Outro teste para verificar o link de Relatórios
+  const linkElement = screen.getByText(/Relatórios/i);
   expect(linkElement).toBeInTheDocument();
 });
