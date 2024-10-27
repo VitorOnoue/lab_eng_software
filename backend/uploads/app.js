@@ -19,6 +19,8 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
+app.use(express.static('public'));
+
 // Rota para upload de arquivos
 app.post('/upload', upload.single('notaFiscal'), async (req, res) => {
   try {
