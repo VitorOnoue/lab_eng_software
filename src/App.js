@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import Upload from './Upload';
-import Relatorios from './Relatorios';
+import Upload from './Upload.js';
+import Relatorios from './Relatorios.js';
 import './styles.css';
 
 const App = () => (

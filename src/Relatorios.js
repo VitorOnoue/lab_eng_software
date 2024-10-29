@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import mockBackend from './mockBackend';
+import mockBackend from './mockBackend.js';
 
 const Relatorios = () => {
   const [reports, setReports] = useState([]);

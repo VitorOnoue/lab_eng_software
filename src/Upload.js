@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import mockBackend from './mockBackend';
+import mockBackend from './mockBackend.js';
 
 const Upload = () => {
   const [file, setFile] = useState(null);

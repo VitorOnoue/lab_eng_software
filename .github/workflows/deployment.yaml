@@ -1,25 +1,51 @@
 name: CD-projeto-prod
 
-env:
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
 on: push
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
 
-      - name: install vercel CLI
-        run: npm install --global vercel
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
-      - name: pull vercel env info
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy to EC2
+        env:
+          HOST: ${{ secrets.EC2_HOST }}
+          USER: ${{ secrets.EC2_USER }}
+        run: |
+          scp -o StrictHostKeyChecking=no -r /home/runner/work/lab_eng_software/lab_eng_software/* $USER@$HOST:/home/$USER/app
 
-      - name: build project artifacts
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+          ssh -o StrictHostKeyChecking=no $USER@$HOST << 'EOF'
+            cd /home/$USER/app/src
+
+            if [ ! -f "App.js" ]; then
+              echo "Error: Entry file /home/$USER/app/src/App.js not found."
+              exit 1
+            fi
+
+            npm install
+
+            pm2 start App.js --name myApp || pm2 restart myApp
+          EOF
+
+
+
+
+
+      # - name: install vercel CLI
+      #   run: npm install --global vercel
+
+      # - name: pull vercel env info
+      #   run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      # - name: build project artifacts
+      #   run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
       
-      - name: deploy project artifacts
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+      # - name: deploy project artifacts
+      #   run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
