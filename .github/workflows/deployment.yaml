@@ -19,19 +19,11 @@ jobs:
           HOST: ${{ secrets.EC2_HOST }}
           USER: ${{ secrets.EC2_USER }}
         run: |
-          scp -o StrictHostKeyChecking=no -r /home/runner/work/lab_eng_software/lab_eng_software/* $USER@$HOST:/home/$USER/app
-
           ssh -o StrictHostKeyChecking=no $USER@$HOST << 'EOF'
-            cd /home/$USER/app/src
-
-            if [ ! -f "App.js" ]; then
-              echo "Error: Entry file /home/$USER/app/src/App.js not found."
-              exit 1
-            fi
-
-            npm install
-
-            pm2 start App.js --name myApp || pm2 restart myApp
+          git clone https://github.com/VitorOnoue/lab_eng_software.git
+          cd lab_eng_software
+          npm install
+          npm run build
           EOF
 
 
