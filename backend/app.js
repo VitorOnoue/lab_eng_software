@@ -87,6 +87,35 @@ app.post('/api/upload-pdf', upload.array('pdfs'), async (req, res) => {
     }
 });
 
+
+// **Adicionando o endpoint /api/expenses-per-month**
+app.get('/api/expenses-per-month', async (req, res) => {
+    try {
+        const query = `
+            SELECT 
+                DATE_FORMAT(invoice_date, '%Y-%m') as month,
+                SUM(invoice_value) as total_expenses
+            FROM pdf_data
+            GROUP BY month
+            ORDER BY month;
+        `;
+        const results = await new Promise((resolve, reject) => {
+            db.query(query, (err, results) => {
+                if (err) {
+                    console.error('Erro ao consultar dados:', err);
+                    return reject(err);
+                }
+                resolve(results);
+            });
+        });
+        res.json(results);
+    } catch (error) {
+        console.error('Erro ao obter dados das despesas:', error);
+        res.status(500).json({ message: 'Erro ao obter dados das despesas.' });
+    }
+});
+
+
 // Função de extração de dados do PDF
 async function extractDataFromPdf(pdfBuffer) {
     const data = await pdf(pdfBuffer);
