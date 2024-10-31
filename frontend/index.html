@@ -1,16 +1,26 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="style.css"> <!-- Link para o CSS -->
-</head>
+    <title>Controle de Despesas de Energia</title>
+    <!-- Importação das fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fonte Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <!-- Link para o CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Biblioteca Chart.js via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+</head> 
 <body>
+    <!-- Contêiner de login -->
     <div class="login-container" id="login-container">
-        <h2>Login</h2>
-        <form id="login-form" onsubmit="return handleLogin(event)">
+        <h2>
+            <img src="images/renewable-energy_6946415.png" alt="Ícone de Energia" style="width:30px; vertical-align:middle; margin-right:10px;">
+            Login
+        </h2>
+        <form id="login-form">
             <label for="usuario">Usuário:</label>
             <input type="text" id="usuario" placeholder="Usuário" required>
             <label for="senha">Senha:</label>
@@ -20,9 +30,13 @@
         <p>Não tem uma conta? <a href="#" onclick="toggleRegister()">Cadastre-se</a></p>
     </div>
 
+    <!-- Contêiner de cadastro -->
     <div class="register-container" id="register-container">
-        <h2>Cadastro</h2>
-        <form id="register-form" onsubmit="return handleRegister(event)">
+        <h2>
+            <img src="images/renewable-energy_6946415.png" alt="Ícone de Energia" style="width:30px; vertical-align:middle; margin-right:10px;">
+            Cadastro
+        </h2>
+        <form id="register-form">
             <label for="new-usuario">Usuário:</label>
             <input type="text" id="new-usuario" placeholder="Usuário" required>
             <label for="new-senha">Senha:</label>
@@ -32,18 +46,31 @@
         <p>Já tem uma conta? <a href="#" onclick="toggleLogin()">Faça login</a></p>
     </div>
 
+    <!-- Tela de boas-vindas -->
     <div class="welcome-screen" id="welcome-screen" style="display:none;">
-        <h2>Bem-vindo!</h2>
-        <p>Você está autenticado.</p>
-        <!-- Botão de upload de PDF -->
-        <div class="upload-section">
+        <!-- Botão de upload no canto superior direito -->
+        <div class="upload-button">
             <label for="upload-pdfs">
                 <button onclick="document.getElementById('upload-pdfs').click()">Upload de PDFs</button>
             </label>
             <input type="file" id="upload-pdfs" accept="application/pdf" multiple style="display:none" onchange="handlePdfUpload(event)">
-        </div>        
+        </div>
+
+        <!-- Conteúdo principal -->
+        <div class="main-content">
+            <h2>
+                <img src="images/renewable-energy_6946415.png" alt="Ícone de Energia" style="width:40px; vertical-align:middle; margin-right:10px;">
+                Bem-vindo!
+            </h2>
+            <p>Você está autenticado.</p>
+            <!-- Retângulo branco com o gráfico -->
+            <div class="chart-container">
+                <canvas id="expensesChart"></canvas>
+            </div>
+        </div>
     </div>
 
-    <script src="script.js"></script> <!-- Link para o JS -->
+    <!-- Seu script.js (após o Chart.js) -->
+    <script src="script.js"></script>
 </body>
 </html>

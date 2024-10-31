@@ -1,66 +1,184 @@
+/* Importação da fonte no HTML */
+
 body {
-    background-color: #f9e27f; /* Amarelo pastoso */
-    display: flex;
-    justify-content: center; /* Centraliza horizontalmente */
-    align-items: center; /* Centraliza verticalmente */
-    height: 100vh; /* Altura da viewport */
-    margin: 0; /* Remove margens padrão */
-    transition: background-color 0.3s; /* Transição suave de cor */
+    background-color: #f0f4f8; /* Fundo claro */
+    margin: 0;
+    font-family: 'Roboto', sans-serif; /* Fonte moderna */
+    color: #333; /* Cor do texto */
 }
 
-.login-container {
-    background-color: white; /* Retângulo branco */
-    padding: 40px; /* Espaçamento interno */
+/* Botão de upload no canto superior direito */
+.welcome-screen {
+    position: relative; /* Para posicionar o botão de upload dentro dela */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh; /* Ocupa toda a altura da tela */
+}
+
+.welcome-screen .upload-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.welcome-screen .upload-button button {
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #007BFF; /* Azul */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.welcome-screen .upload-button button:hover {
+    background-color: #0056b3; /* Azul mais escuro */
+}
+
+.welcome-screen h2 {
+    font-size: 36px;
+    margin-top: 100px;
+    color: #007BFF; /* Azul */
+}
+
+.welcome-screen p {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+/* Retângulo branco para o gráfico */
+.chart-container {
+    background-color: white; /* Fundo branco */
+    padding: 30px;
     border-radius: 10px; /* Bordas arredondadas */
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Sombra */
-    width: 450px; /* Largura do retângulo aumentada */
-    text-align: right; /* Alinha texto à direita */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Sombra */
+    width: 95%; /* Aumentado para 95% */
+    max-width: 1200px; /* Largura máxima */
+    margin: 20px auto;
+}
+
+.chart-container canvas {
+    width: 100% !important;
+    height: 500px !important; /* Altura do gráfico */
+}
+
+/* Estilo dos contêineres de login e registro */
+.login-container,
+.register-container {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    margin: 100px auto; /* Centraliza verticalmente */
+}
+
+/* Oculta o formulário de registro inicialmente */
+.register-container {
+    display: none;
 }
 
 h2 {
-    text-align: center; /* Centraliza o título */
-    margin-bottom: 20px; /* Margem inferior do título */
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 30px;
+    color: #007BFF; /* Azul */
 }
 
 label {
-    font-size: 14px; /* Tamanho da fonte menor */
-    display: block; /* Faz com que os rótulos ocupem toda a linha */
-    margin-bottom: 5px; /* Margem inferior do rótulo */
-    text-align: left; /* Alinha texto do rótulo à esquerda */
+    font-size: 16px;
+    display: block;
+    margin-bottom: 5px;
+    text-align: left;
+    color: #333;
 }
 
 input[type="text"],
 input[type="password"] {
-    width: 100%; /* Largura total */
-    padding: 10px; /* Espaçamento interno */
-    margin: 10px 0; /* Margens superior e inferior */
-    border: 1px solid #ccc; /* Borda cinza */
-    border-radius: 5px; /* Bordas arredondadas */
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
+/* Atualização para centralizar os botões */
 button {
-    padding: 10px; /* Espaçamento interno */
-    background-color: #4CAF50; /* Verde */
-    color: white; /* Texto branco */
-    border: none; /* Remove borda */
-    border-radius: 5px; /* Bordas arredondadas */
-    cursor: pointer; /* Muda o cursor ao passar o mouse */
-    width: 100%; /* Largura total do botão */
+    padding: 12px;
+    background-color: #28a745; /* Verde */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 50%; /* Define a largura do botão */
+    font-size: 18px;
+    display: block; /* Necessário para margin auto funcionar */
+    margin: 20px auto; /* Centraliza o botão e adiciona margem vertical */
 }
 
 button:hover {
-    background-color: #45a049; /* Cor ao passar o mouse */
+    background-color: #218838; /* Verde mais escuro */
 }
 
-/* Estilo da nova tela */
-.welcome-screen {
-    display: none; /* Esconde a nova tela inicialmente */
-    flex-direction: column; /* Alinha itens verticalmente */
-    align-items: center; /* Centraliza horizontalmente */
+/* Centraliza o texto dos parágrafos que contém os links de login/cadastro */
+.login-container p,
+.register-container p {
     text-align: center; /* Centraliza o texto */
+    margin-top: 15px; /* Adiciona uma margem superior */
 }
 
-.register-container {
-    display: none; /* Oculta o formulário de cadastro */
-    margin-top: 20px; /* Margem superior do formulário de registro */
+p {
+    font-size: 16px;
+    color: #555;
+}
+
+/* Links */
+a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Estilo para mensagens de erro */
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: -10px;
+}
+
+.chart-container {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.chart-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .chart-container {
+        padding: 20px;
+    }
+
+    .welcome-screen h2 {
+        font-size: 28px;
+    }
+
+    .welcome-screen p {
+        font-size: 18px;
+    }
+
+    button {
+        font-size: 16px;
+        width: 70%; /* Ajusta a largura do botão em telas menores */
+    }
 }
