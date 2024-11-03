@@ -1,5 +1,5 @@
 // script.js
-
+const apiurl = '54.235.231.3';
 document.addEventListener("DOMContentLoaded", function() {
     const loginContainer = document.getElementById('login-container');
     const registerContainer = document.getElementById('register-container');
@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const password = document.getElementById('senha').value;
     
         try {
-            const response = await fetch('http://localhost:3000/api/login', {
+            const response = await fetch(`http://${apiurl}/api/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const password = document.getElementById('new-senha').value;
 
         try {
-            const response = await fetch('http://localhost:3000/api/register', {
+            const response = await fetch(`http://${apiurl}/api/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     
         try {
-            const response = await fetch('http://localhost:3000/api/upload-pdf', {
+            const response = await fetch(`http://${apiurl}/api/upload-pdf`, {
                 method: 'POST',
                 body: formData
             });
@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Função para buscar dados e renderizar o gráfico
     async function fetchAndRenderChart() {
         try {
-            const response = await fetch('http://localhost:3000/api/expenses-per-month');
+            const response = await fetch(`http://${apiurl}/api/expenses-per-month`);
             const data = await response.json();
 
             if (response.ok) {
