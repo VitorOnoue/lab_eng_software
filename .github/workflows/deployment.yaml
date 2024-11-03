@@ -24,7 +24,7 @@ jobs:
           cd lab_eng_software
           npm install
           npm run build
-          sudo cp -r build /
+          sudo cp -r build var/www/html
           EOF
 
 
