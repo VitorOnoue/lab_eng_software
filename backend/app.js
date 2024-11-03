@@ -25,6 +25,10 @@ app.listen(PORT, () => {
 const storage = multer.memoryStorage(); // Armazenamento em memória
 const upload = multer({ storage });
 
+app.get('/api/hello-world', async (req, res) => {
+    return res.status(200).json({message: "GOL"});
+});
+
 // Rota para upload de PDF e processamento
 app.post('/api/upload-pdf', upload.array('pdfs'), async (req, res) => {
     console.log('Rota de upload chamada');

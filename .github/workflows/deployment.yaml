@@ -20,11 +20,12 @@ jobs:
           USER: ${{ secrets.EC2_USER }}
         run: |
           ssh -o StrictHostKeyChecking=no $USER@$HOST << 'EOF'
+          rm -rf lab_eng_software
           git clone https://github.com/VitorOnoue/lab_eng_software.git
           cd lab_eng_software
-          npm install
-          npm run build
-          sudo cp -r build /var/www/html
+          sudo cp -r frontend /var/www/html
+          # cd backend
+          # npm install
           EOF
 
 
