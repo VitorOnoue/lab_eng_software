@@ -24,8 +24,9 @@ jobs:
           git clone https://github.com/VitorOnoue/lab_eng_software.git
           cd lab_eng_software
           sudo cp -r frontend /var/www/html
-          # cd backend
-          # npm install
+          cd backend
+          pm2 stop app.js
+          pm2 start app.js
           EOF
 
 
