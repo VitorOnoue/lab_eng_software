@@ -29,67 +29,72 @@ app.get('/api/hello-world', async (req, res) => {
     return res.status(200).json({message: "GOL"});
 });
 
-// Rota para upload de PDF e processamento
+// app.js
 app.post('/api/upload-pdf', upload.array('pdfs'), async (req, res) => {
-    console.log('Rota de upload chamada');
     if (!req.files || req.files.length === 0) {
-        console.log('Nenhum arquivo enviado');
         return res.status(400).json({ message: 'Nenhum arquivo foi enviado.' });
     }
 
     const queries = req.files.map(async (file) => {
         const { originalname, buffer } = file;
-        console.log(`Processando PDF: ${originalname}`);
 
         try {
             const extractedData = await extractDataFromPdf(buffer);
-            console.log(`Dados extraídos do PDF:`, extractedData);
 
-            if (extractedData.invoiceValue === null || extractedData.invoiceDate === null) {
-                console.error('Dados incompletos extraídos do PDF.');
+            if (!extractedData.invoiceNumber || !extractedData.invoiceDate || !extractedData.totalAmount) {
                 throw new Error('Não foi possível extrair todos os dados necessários do PDF.');
             }
 
-            const query = 'INSERT INTO pdf_files (filename) VALUES (?)';
-            const result = await new Promise((resolve, reject) => {
-                db.query(query, [originalname], (err, results) => {
+            // Insere os dados na tabela invoices
+            const query = `
+                INSERT INTO invoices (invoice_number, customer_name, invoice_date, due_date, total_amount, consumption, energy_operator, taxes, other_charges)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `;
+            await new Promise((resolve, reject) => {
+                db.query(query, [
+                    extractedData.invoiceNumber,
+                    extractedData.customerName,
+                    extractedData.invoiceDate,
+                    extractedData.dueDate,
+                    extractedData.totalAmount,
+                    extractedData.consumption,
+                    extractedData.energyOperator,
+                    extractedData.taxes,
+                    extractedData.otherCharges
+                ], (err, results) => {
                     if (err) {
-                        console.error('Erro ao inserir PDF:', err);
-                        return reject(err);
+                        if (err.code === 'ER_DUP_ENTRY') {
+                            return reject(new Error('Fatura duplicada.'));
+                        } else {
+                            return reject(err);
+                        }
                     }
                     resolve(results);
                 });
             });
 
-            const pdfId = result.insertId; // ID do PDF inserido
-
-            const dataQuery = 'INSERT INTO pdf_data (pdf_id, invoice_value, invoice_date) VALUES (?, ?, ?)';
-            await new Promise((resolve, reject) => {
-                db.query(dataQuery, [pdfId, extractedData.invoiceValue, extractedData.invoiceDate], (err) => {
-                    if (err) {
-                        console.error('Erro ao inserir dados do PDF:', err);
-                        return reject(err);
-                    }
-                    resolve();
-                });
-            });
-
-            console.log(`Dados do PDF ${originalname} salvos com sucesso!`);
         } catch (error) {
-            console.error('Erro ao processar o PDF:', error.message);
-            throw error; // Propaga o erro para ser capturado pelo Promise.all
+            throw error;
         }
     });
 
-    // Aguarda a conclusão de todas as promessas
     try {
         await Promise.all(queries);
-        res.json({ message: 'PDFs e dados salvos com sucesso!' });
+        res.json({ message: 'Dados dos PDFs salvos com sucesso!' });
     } catch (err) {
-        console.error('Erro ao salvar os PDFs ou dados no banco de dados:', err);
-        res.status(500).json({ message: 'Erro ao salvar os PDFs ou dados no banco de dados.' });
+        res.status(500).json({ message: 'Erro ao salvar os dados no banco de dados.' });
     }
 });
+
+function extractEnergyOperator(text) {
+    if (text.includes('Enel')) {
+        return 'Enel';
+    } else if (text.includes('OutraOperadora')) {
+        return 'OutraOperadora';
+    } else {
+        return 'Desconhecida';
+    }
+}
 
 
 // **Adicionando o endpoint /api/expenses-per-month**
@@ -98,15 +103,15 @@ app.get('/api/expenses-per-month', async (req, res) => {
         const query = `
             SELECT 
                 DATE_FORMAT(invoice_date, '%Y-%m') as month,
-                SUM(invoice_value) as total_expenses
-            FROM pdf_data
+                SUM(total_amount) as total_expenses,
+                SUM(consumption) as total_consumption
+            FROM invoices
             GROUP BY month
             ORDER BY month;
         `;
         const results = await new Promise((resolve, reject) => {
             db.query(query, (err, results) => {
                 if (err) {
-                    console.error('Erro ao consultar dados:', err);
                     return reject(err);
                 }
                 resolve(results);
@@ -114,29 +119,15 @@ app.get('/api/expenses-per-month', async (req, res) => {
         });
         res.json(results);
     } catch (error) {
-        console.error('Erro ao obter dados das despesas:', error);
         res.status(500).json({ message: 'Erro ao obter dados das despesas.' });
     }
 });
 
 
-// Função de extração de dados do PDF
-async function extractDataFromPdf(pdfBuffer) {
-    const data = await pdf(pdfBuffer);
-    const text = data.text;
 
-    console.log('--- Texto extraído do PDF ---\n', text);
+// app.js
+const { extractDataFromPdf } = require('./utils/pdfParser'); // Mova as funções de extração para um módulo separado
 
-    const invoiceValue = extractInvoiceValue(text);
-    const invoiceDateRaw = extractInvoiceDate(text);
-    const invoiceDate = formatDateToMySQL(invoiceDateRaw);
-
-    console.log('Valor da fatura extraído:', invoiceValue);
-    console.log('Data da fatura extraída (bruta):', invoiceDateRaw);
-    console.log('Data da fatura formatada:', invoiceDate);
-
-    return { invoiceValue, invoiceDate };
-}
 
 // Função para converter a data para o formato MySQL 'YYYY-MM-DD'
 function formatDateToMySQL(dateString) {

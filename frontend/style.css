@@ -1,184 +1,172 @@
-/* Importação da fonte no HTML */
+/* frontend/style.css */
 
 body {
-    background-color: #f0f4f8; /* Fundo claro */
+    background-color: #f0f4f8;
     margin: 0;
-    font-family: 'Roboto', sans-serif; /* Fonte moderna */
-    color: #333; /* Cor do texto */
-}
-
-/* Botão de upload no canto superior direito */
-.welcome-screen {
-    position: relative; /* Para posicionar o botão de upload dentro dela */
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+  }
+  
+  /* Botão de upload */
+  .welcome-screen {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    min-height: 100vh; /* Ocupa toda a altura da tela */
-}
-
-.welcome-screen .upload-button {
+    min-height: 100vh;
+  }
+  
+  .welcome-screen .upload-button {
     position: absolute;
     top: 20px;
     right: 20px;
-}
-
-.welcome-screen .upload-button button {
-    width: 100%;
+  }
+  
+  .welcome-screen .upload-button button {
     padding: 10px 20px;
-    background-color: #007BFF; /* Azul */
+    background-color: #007BFF;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-}
-
-.welcome-screen .upload-button button:hover {
-    background-color: #0056b3; /* Azul mais escuro */
-}
-
-.welcome-screen h2 {
+  }
+  
+  .welcome-screen .upload-button button:hover {
+    background-color: #0056b3;
+  }
+  
+  .welcome-screen h2 {
     font-size: 36px;
     margin-top: 100px;
-    color: #007BFF; /* Azul */
-}
-
-.welcome-screen p {
+    color: #007BFF;
+  }
+  
+  .welcome-screen p {
     font-size: 20px;
     margin-bottom: 20px;
     color: #555;
-}
-
-/* Retângulo branco para o gráfico */
-.chart-container {
-    background-color: white; /* Fundo branco */
+  }
+  
+  /* Gráfico */
+  .chart-container {
+    background-color: white;
     padding: 30px;
-    border-radius: 10px; /* Bordas arredondadas */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Sombra */
-    width: 95%; /* Aumentado para 95% */
-    max-width: 1200px; /* Largura máxima */
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 95%;
+    max-width: 1200px;
     margin: 20px auto;
-}
-
-.chart-container canvas {
+  }
+  
+  .chart-container canvas {
     width: 100% !important;
-    height: 500px !important; /* Altura do gráfico */
-}
-
-/* Estilo dos contêineres de login e registro */
-.login-container,
-.register-container {
+    height: 500px !important;
+  }
+  
+  /* Contêineres de login e registro */
+  .login-container,
+  .register-container {
     background-color: white;
     padding: 40px;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     width: 400px;
-    margin: 100px auto; /* Centraliza verticalmente */
-}
-
-/* Oculta o formulário de registro inicialmente */
-.register-container {
+    margin: 100px auto;
+  }
+  
+  .register-container {
     display: none;
-}
-
-h2 {
+  }
+  
+  h2 {
     text-align: center;
     margin-bottom: 20px;
     font-size: 30px;
-    color: #007BFF; /* Azul */
-}
-
-label {
+    color: #007BFF;
+  }
+  
+  label {
     font-size: 16px;
     display: block;
     margin-bottom: 5px;
     text-align: left;
     color: #333;
-}
-
-input[type="text"],
-input[type="password"] {
+  }
+  
+  input[type="text"],
+  input[type="password"] {
     width: 100%;
     padding: 12px;
     margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
-}
-
-/* Atualização para centralizar os botões */
-button {
+  }
+  
+  button {
     padding: 12px;
-    background-color: #28a745; /* Verde */
+    background-color: #28a745;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    width: 50%; /* Define a largura do botão */
+    width: 50%;
     font-size: 18px;
-    display: block; /* Necessário para margin auto funcionar */
-    margin: 20px auto; /* Centraliza o botão e adiciona margem vertical */
-}
-
-button:hover {
-    background-color: #218838; /* Verde mais escuro */
-}
-
-/* Centraliza o texto dos parágrafos que contém os links de login/cadastro */
-.login-container p,
-.register-container p {
-    text-align: center; /* Centraliza o texto */
-    margin-top: 15px; /* Adiciona uma margem superior */
-}
-
-p {
+    display: block;
+    margin: 20px auto;
+  }
+  
+  button:hover {
+    background-color: #218838;
+  }
+  
+  .login-container p,
+  .register-container p {
+    text-align: center;
+    margin-top: 15px;
+  }
+  
+  p {
     font-size: 16px;
     color: #555;
-}
-
-/* Links */
-a {
+  }
+  
+  a {
     color: #007BFF;
     text-decoration: none;
-}
-
-a:hover {
+  }
+  
+  a:hover {
     text-decoration: underline;
-}
-
-/* Estilo para mensagens de erro */
-.error-message {
-    color: red;
-    font-size: 14px;
-    margin-top: -10px;
-}
-
-.chart-container {
+  }
+  
+  .chart-container {
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-.chart-container.visible {
+  }
+  
+  .chart-container.visible {
     opacity: 1;
     transform: translateY(0);
-}
-
-/* Responsividade */
-@media (max-width: 768px) {
+  }
+  
+  @media (max-width: 768px) {
     .chart-container {
-        padding: 20px;
+      padding: 20px;
     }
-
+  
     .welcome-screen h2 {
-        font-size: 28px;
+      font-size: 28px;
     }
-
+  
     .welcome-screen p {
-        font-size: 18px;
+      font-size: 18px;
     }
-
+  
     button {
-        font-size: 16px;
-        width: 70%; /* Ajusta a largura do botão em telas menores */
+      font-size: 16px;
+      width: 70%;
     }
-}
+  }
+  

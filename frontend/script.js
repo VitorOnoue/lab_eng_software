@@ -1,219 +1,205 @@
-// script.js
-const apiurl = '54.235.231.3';
+// frontend/script.js
+
+const apiurl = '54.210.33.134'; // IP AQUI
+
 document.addEventListener("DOMContentLoaded", function() {
-    const loginContainer = document.getElementById('login-container');
-    const registerContainer = document.getElementById('register-container');
-    const welcomeScreen = document.getElementById('welcome-screen');
+  const loginContainer = document.getElementById('login-container');
+  const registerContainer = document.getElementById('register-container');
+  const welcomeScreen = document.getElementById('welcome-screen');
 
-    // Função para lidar com o login
-    async function handleLogin(event) {
-        event.preventDefault();
-        
-        const username = document.getElementById('usuario').value;
-        const password = document.getElementById('senha').value;
-    
-        try {
-            const response = await fetch(`http://${apiurl}/api/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username, password })
-            });
-    
-            const data = await response.json();
-    
-            if (response.ok) {
-                loginContainer.style.display = 'none';
-                welcomeScreen.style.display = 'flex';
-                document.querySelector('.welcome-screen h2').innerText = `Bem-vindo, ${username}!`;
-    
-                // **Adicionar um pequeno atraso para garantir que o DOM seja atualizado**
-                setTimeout(async () => {
-                    // Após o welcome-screen ser exibido, buscar dados e renderizar o gráfico
-                    await fetchAndRenderChart();
-                }, 100); // Atraso de 100ms
-            } else {
-                alert(data.message);
-            }
-        } catch (error) {
-            console.error('Erro ao fazer login:', error);
-        }
-    }
+  // Função para lidar com o login
+  async function handleLogin(event) {
+    event.preventDefault();
 
-    // Função para lidar com o registro
-    async function handleRegister(event) {
-        event.preventDefault();
-        
-        const username = document.getElementById('new-usuario').value;
-        const password = document.getElementById('new-senha').value;
+    const username = document.getElementById('usuario').value;
+    const password = document.getElementById('senha').value;
 
-        try {
-            const response = await fetch(`http://${apiurl}/api/register`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username, password })
-            });
+    try {
+      const response = await fetch(`http://${apiurl}/api/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
 
-            const data = await response.json();
+      const data = await response.json();
 
-            if (response.ok) {
-                alert('Cadastro realizado com sucesso! Faça login agora.');
-                toggleLogin(); 
-            } else {
-                alert(data.message);
-            }
-        } catch (error) {
-            console.error('Erro ao cadastrar:', error);
-        }
-    }
-
-    // Funções de alternância no escopo global
-    window.toggleRegister = function() {
-        console.log('toggleRegister chamado');
+      if (response.ok) {
         loginContainer.style.display = 'none';
-        registerContainer.style.display = 'block';
-    };
+        welcomeScreen.style.display = 'flex';
+        document.querySelector('.welcome-screen h2').innerText = `Bem-vindo, ${username}!`;
 
-    window.toggleLogin = function() {
-        console.log('toggleLogin chamado');
-        registerContainer.style.display = 'none';
-        loginContainer.style.display = 'block';
-    };
+        // Armazena o token JWT para uso futuro
+        localStorage.setItem('token', data.token);
 
-    // Adiciona os event listeners aos formulários
-    document.getElementById("login-form").addEventListener("submit", handleLogin);
-    document.getElementById("register-form").addEventListener("submit", handleRegister);
+        // Atualiza o gráfico
+        await fetchAndRenderChart();
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error('Erro ao fazer login:', error);
+    }
+  }
 
-    // Função de upload de PDF no escopo global
-    window.handlePdfUpload = async function(event) {
-        const files = event.target.files;
-        if (!files || files.length === 0) return;
-    
-        const formData = new FormData();
-        for (const file of files) {
-            formData.append('pdfs', file);
-        }
-    
-        try {
-            const response = await fetch(`http://${apiurl}/api/upload-pdf`, {
-                method: 'POST',
-                body: formData
-            });
-    
-            const data = await response.json();
-            console.log('Resposta do servidor:', data); // Log da resposta
-    
-            if (response.ok) {
-                alert('PDFs enviados e salvos no banco de dados com sucesso!');
-                // Atualiza o gráfico após o upload
-                await fetchAndRenderChart();
-            } else {
-                alert(data.message || 'Erro ao enviar os PDFs');
-            }
-        } catch (error) {
-            console.error('Erro no upload dos PDFs:', error);
-        }
-    };
+  // Função para lidar com o registro
+  async function handleRegister(event) {
+    event.preventDefault();
 
-    // Função para buscar dados e renderizar o gráfico
-    async function fetchAndRenderChart() {
-        try {
-            const response = await fetch(`http://${apiurl}/api/expenses-per-month`);
-            const data = await response.json();
+    const username = document.getElementById('new-usuario').value;
+    const password = document.getElementById('new-senha').value;
 
-            if (response.ok) {
-                renderChart(data);
-            } else {
-                console.error('Erro ao obter dados das despesas:', data.message);
-            }
-        } catch (error) {
-            console.error('Erro ao buscar dados das despesas:', error);
-        }
+    try {
+      const response = await fetch(`http://${apiurl}/api/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('Cadastro realizado com sucesso! Faça login agora.');
+        toggleLogin(); 
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error('Erro ao cadastrar:', error);
+    }
+  }
+
+  // Funções de alternância
+  window.toggleRegister = function() {
+    loginContainer.style.display = 'none';
+    registerContainer.style.display = 'block';
+  };
+
+  window.toggleLogin = function() {
+    registerContainer.style.display = 'none';
+    loginContainer.style.display = 'block';
+  };
+
+  // Event listeners
+  document.getElementById("login-form").addEventListener("submit", handleLogin);
+  document.getElementById("register-form").addEventListener("submit", handleRegister);
+
+  // Função de upload de PDF
+  window.handlePdfUpload = async function(event) {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+
+    const formData = new FormData();
+    for (const file of files) {
+      formData.append('pdfs', file);
     }
 
-    // Função para renderizar o gráfico usando Chart.js
-    function renderChart(data) {
-        const canvas = document.getElementById('expensesChart');
-        if (!canvas) {
-            console.error("Elemento canvas com id 'expensesChart' não encontrado.");
-            return;
-        }
-        const ctx = canvas.getContext('2d');
-        if (!ctx) {
-            console.error("Não foi possível obter o contexto do canvas.");
-            return;
-        }
+    try {
+      const token = localStorage.getItem('token');
 
-        // Verifica se window.expensesChart existe e é uma instância de Chart
-        if (window.expensesChart instanceof Chart) {
-            window.expensesChart.destroy();
-            console.log('Gráfico anterior destruído.');
-        } else {
-            console.log('Nenhum gráfico anterior para destruir.');
-        }
+      const response = await fetch(`http://${apiurl}/api/upload-pdf`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: formData
+      });
 
-        // Cria o gráfico e atribui a window.expensesChart
-        window.expensesChart = new Chart(ctx, {
-            type: 'line', // Alterado para gráfico de linhas
-            data: {
-                labels: data.map(item => item.month),
-                datasets: [{
-                    label: 'Consumo de Energia (kWh)',
-                    data: data.map(item => item.total_expenses),
-                    backgroundColor: 'rgba(0, 123, 255, 0.2)', // Azul claro
-                    borderColor: '#007BFF', // Azul
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.3, // Suaviza as linhas
-                }]
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('PDFs enviados e processados com sucesso!');
+        // Atualiza o gráfico após o upload
+        await fetchAndRenderChart();
+      } else {
+        alert(data.message || 'Erro ao enviar os PDFs');
+      }
+    } catch (error) {
+      console.error('Erro no upload dos PDFs:', error);
+    }
+  };
+
+  // Função para buscar dados e renderizar o gráfico
+  async function fetchAndRenderChart() {
+    try {
+      const token = localStorage.getItem('token');
+
+      const response = await fetch(`http://${apiurl}/api/expenses-per-month`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        renderChart(data);
+      } else {
+        console.error('Erro ao obter dados das despesas:', data.message);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar dados das despesas:', error);
+    }
+  }
+
+  // Função para renderizar o gráfico usando Chart.js
+  function renderChart(data) {
+    const canvas = document.getElementById('expensesChart');
+    const ctx = canvas.getContext('2d');
+
+    if (window.expensesChart instanceof Chart) {
+      window.expensesChart.destroy();
+    }
+
+    window.expensesChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: data.map(item => item.month),
+        datasets: [
+          {
+            label: 'Despesas Totais (R$)',
+            data: data.map(item => item.total_expenses),
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1,
+            yAxisID: 'y'
+          },
+          {
+            label: 'Consumo Total (kWh)',
+            data: data.map(item => item.total_consumption),
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1,
+            yAxisID: 'y1'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            type: 'linear',
+            position: 'left',
+            title: {
+              display: true,
+              text: 'Despesas (R$)'
+            }
+          },
+          y1: {
+            type: 'linear',
+            position: 'right',
+            title: {
+              display: true,
+              text: 'Consumo (kWh)'
             },
-            options: {
-                responsive: true,
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Histórico de Consumo de Energia',
-                        font: {
-                            size: 22
-                        }
-                    },
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                let label = 'Consumo: ' + context.parsed.y + ' kWh';
-                                return label;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Consumo (kWh)'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Mês'
-                        }
-                    }
-                }
+            grid: {
+              drawOnChartArea: false
             }
-        });
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Mês'
+            }
+          }
+        }
+      }
+    });
 
-        // Adicionar classe 'visible' para animação
-        document.querySelector('.chart-container').classList.add('visible');
-
-        // Log para depuração
-        console.log('window.expensesChart após a criação:', window.expensesChart);
-    }
+    document.querySelector('.chart-container').classList.add('visible');
+  }
 });
