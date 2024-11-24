@@ -15,7 +15,6 @@ debugger;
   const consumption = extractConsumption(text);
   const energyOperator = extractEnergyOperator(text);
   const taxes = extractTaxes(text);
-  const otherCharges = extractOtherCharges(text);
   const invoiceDate = formatDateToMySQL(invoiceDateRaw);
   const dueDate = formatDateToMySQL(dueDateRaw);
 
@@ -28,7 +27,6 @@ debugger;
     consumption,
     energyOperator,
     taxes,
-    otherCharges,
   };
 }
 
@@ -81,25 +79,13 @@ function extractConsumption(text) {
 }
 
 function extractEnergyOperator(text) {
-  if (text.includes("Enel")) {
-    return "Enel";
-  } else if (text.includes("OutraOperadora")) {
-    return "OutraOperadora";
-  } else {
-    return "Desconhecida";
-  }
+  return "Enel-SP";
 }
 
 function extractTaxes(text) {
-  const match = text.match(/Total de Impostos:\s*R?\$?\s*([\d\.,]+)/i);
-  if (!match) return null;
-  return parseFloat(match[1].replace(/\./g, "").replace(",", "."));
-}
-
-function extractOtherCharges(text) {
-  const match = text.match(/Outras Tarifas:\s*R?\$?\s*([\d\.,]+)/i);
-  if (!match) return null;
-  return parseFloat(match[1].replace(/\./g, "").replace(",", "."));
+  const line = text.split("\n").find(line => line.includes("TOTAL"));
+  const values = line ? line.match(/\d+, \d{2}/g) : [];
+  return values;
 }
 
 module.exports = {
