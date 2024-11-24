@@ -3,9 +3,9 @@ const mysql = require('mysql2');
 // Configuração da conexão com o banco de dados MySQL
 const db = mysql.createConnection({
     host: 'eng-db.c5mu0ekkaz0m.us-east-1.rds.amazonaws.com',
-    user: 'admin', // Substitua pelo seu usuário do MySQL
-    password: 'engenhariasoftwaretaosso', // Substitua pela sua senha do MySQL
-    database: 'engdb' // Substitua pelo nome do seu banco de dados
+    user: 'admin', // usuário do MySQL
+    password: 'engenhariasoftwaretaosso', // senha do MySQL
+    database: 'engdb' // nome do banco de dados
 });
 
 // Conecta ao banco de dados

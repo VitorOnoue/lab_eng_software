@@ -1,5 +1,3 @@
-// frontend/script.js
-
 const apiurl = "3.87.240.227"; // IP AQUI
 
 document.addEventListener("DOMContentLoaded", function () {

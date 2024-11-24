@@ -1,5 +1,3 @@
-// backend/utils/pdfParser.js
-
 const pdf = require("pdf-parse");
 
 async function extractDataFromPdf(pdfBuffer) {

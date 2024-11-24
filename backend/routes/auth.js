@@ -1,5 +1,3 @@
-// auth.js
-
 const express = require('express');
 const router = express.Router();
 const db = require('../config/db'); // Importa a configuração do banco de dados

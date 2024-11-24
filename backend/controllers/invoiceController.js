@@ -1,5 +1,3 @@
-// backend/controllers/invoiceController.js
-
 const Invoice = require('../models/invoiceModel');
 const { extractDataFromPdf } = require('../utils/pdfParser');
 
