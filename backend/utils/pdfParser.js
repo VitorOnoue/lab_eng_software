@@ -62,18 +62,17 @@ function extractCustomerName(text) {
 }
 
 function extractInvoiceDate(text) {
-  const match = [...text.matchAll(/\b\d{2}\/\d{2}\/\d{4}\b/)];
-  return match[2] ? match[2][0] : null;
+  const match = text.match(/\b\d{2}\/\d{2}\/\d{4}\b/g);
+  return match ? match[2] : null;
 }
 
 function extractDueDate(text) {
-  const match = text.match(/Data de Vencimento:\s*(\d{2}\/\d{2}\/\d{4})/i);
-  return match ? match[1] : null;
+  const match = text.match(/\b\d{2}\/\d{2}\/\d{4}\b/g);
+  return match ? match[0] : null;
 }
 
 function extractTotalAmount(text) {
-  const match = text.match(/Valor Total:\s*R?\$?\s*([\d\.,]+)/i);
-  if (!match) return null;
+  const match = text.match(/R\$\d{1,3}(?:\.\d{3})*,\d{2}/);
   return parseFloat(match[1].replace(/\./g, "").replace(",", "."));
 }
 
