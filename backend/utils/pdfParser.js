@@ -1,14 +1,16 @@
 // backend/utils/pdfParser.js
 
-const pdf = require('pdf-parse');
+const pdf = require("pdf-parse");
 
 async function extractDataFromPdf(pdfBuffer) {
   const data = await pdf(pdfBuffer);
   const text = data.text;
   console.log(text);
-
+debugger;
   const invoiceNumber = extractInvoiceNumber(text);
+  console.log("começando customer");
   const customerName = extractCustomerName(text);
+  console.log("passou daqui");
   const invoiceDateRaw = extractInvoiceDate(text);
   const dueDateRaw = extractDueDate(text);
   const totalAmount = extractTotalAmount(text);
@@ -16,7 +18,6 @@ async function extractDataFromPdf(pdfBuffer) {
   const energyOperator = extractEnergyOperator(text);
   const taxes = extractTaxes(text);
   const otherCharges = extractOtherCharges(text);
-
   const invoiceDate = formatDateToMySQL(invoiceDateRaw);
   const dueDate = formatDateToMySQL(dueDateRaw);
 
@@ -29,25 +30,36 @@ async function extractDataFromPdf(pdfBuffer) {
     consumption,
     energyOperator,
     taxes,
-    otherCharges
+    otherCharges,
   };
 }
 
 // Funções auxiliares para extração de dados
 function formatDateToMySQL(dateString) {
   if (!dateString) return null;
-  const [day, month, year] = dateString.split('/');
+  const [day, month, year] = dateString.split("/");
   return `${year}-${month}-${day}`;
 }
 
 function extractInvoiceNumber(text) {
-  const match = text.match(/Número da Fatura:\s*(\d+)/i);
+  const match = text.match(/Nº\s*(\d+)/i);
   return match ? match[1] : null;
 }
 
 function extractCustomerName(text) {
-  const match = text.match(/Nome do Cliente:\s*(.+)/i);
-  return match ? match[1].trim() : null;
+  // MEXER
+  const lines = text.split("\n");
+  for (const line of lines) {
+    const lineTrim = line.trim();
+    if (/^[A-ZÀ-Ú\s]+$/.test(lineTrim)) {
+      console.log("linha", lineTrim);
+      return line;
+    }
+  }
+  // const match = text.split("\n")[0];
+  // // const match = text.match(/Nome do Cliente:\s*(.+)/i);
+  // return match ? match[1].trim() : null;
+  return null;
 }
 
 function extractInvoiceDate(text) {
@@ -63,37 +75,37 @@ function extractDueDate(text) {
 function extractTotalAmount(text) {
   const match = text.match(/Valor Total:\s*R?\$?\s*([\d\.,]+)/i);
   if (!match) return null;
-  return parseFloat(match[1].replace(/\./g, '').replace(',', '.'));
+  return parseFloat(match[1].replace(/\./g, "").replace(",", "."));
 }
 
 function extractConsumption(text) {
   const match = text.match(/Consumo \(kWh\):\s*([\d\.,]+)/i);
   if (!match) return null;
-  return parseFloat(match[1].replace(/\./g, '').replace(',', '.'));
+  return parseFloat(match[1].replace(/\./g, "").replace(",", "."));
 }
 
 function extractEnergyOperator(text) {
-  if (text.includes('Enel')) {
-    return 'Enel';
-  } else if (text.includes('OutraOperadora')) {
-    return 'OutraOperadora';
+  if (text.includes("Enel")) {
+    return "Enel";
+  } else if (text.includes("OutraOperadora")) {
+    return "OutraOperadora";
   } else {
-    return 'Desconhecida';
+    return "Desconhecida";
   }
 }
 
 function extractTaxes(text) {
   const match = text.match(/Total de Impostos:\s*R?\$?\s*([\d\.,]+)/i);
   if (!match) return null;
-  return parseFloat(match[1].replace(/\./g, '').replace(',', '.'));
+  return parseFloat(match[1].replace(/\./g, "").replace(",", "."));
 }
 
 function extractOtherCharges(text) {
   const match = text.match(/Outras Tarifas:\s*R?\$?\s*([\d\.,]+)/i);
   if (!match) return null;
-  return parseFloat(match[1].replace(/\./g, '').replace(',', '.'));
+  return parseFloat(match[1].replace(/\./g, "").replace(",", "."));
 }
 
 module.exports = {
-  extractDataFromPdf
+  extractDataFromPdf,
 };
