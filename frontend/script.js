@@ -1,6 +1,6 @@
 // frontend/script.js
 
-const apiurl = '54.210.33.134'; // IP AQUI
+const apiurl = '3.80.52.158'; // IP AQUI
 
 document.addEventListener("DOMContentLoaded", function() {
   const loginContainer = document.getElementById('login-container');
