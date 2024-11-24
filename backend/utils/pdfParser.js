@@ -17,7 +17,6 @@ debugger;
   const consumption = extractConsumption(text);
   const energyOperator = extractEnergyOperator(text);
   const taxes = extractTaxes(text);
-  const otherCharges = extractOtherCharges(text);
   const invoiceDate = formatDateToMySQL(invoiceDateRaw);
   const dueDate = formatDateToMySQL(dueDateRaw);
 
@@ -30,7 +29,6 @@ debugger;
     consumption,
     energyOperator,
     taxes,
-    otherCharges,
   };
 }
 
@@ -62,18 +60,17 @@ function extractCustomerName(text) {
 }
 
 function extractInvoiceDate(text) {
-  const match = [...text.matchAll(/\b\d{2}\/\d{2}\/\d{4}\b/)];
-  return match[2] ? match[2][0] : null;
+  const match = text.match(/\b\d{2}\/\d{2}\/\d{4}\b/g);
+  return match ? match[2] : null;
 }
 
 function extractDueDate(text) {
-  const match = text.match(/Data de Vencimento:\s*(\d{2}\/\d{2}\/\d{4})/i);
-  return match ? match[1] : null;
+  const match = text.match(/\b\d{2}\/\d{2}\/\d{4}\b/g);
+  return match ? match[0] : null;
 }
 
 function extractTotalAmount(text) {
-  const match = text.match(/Valor Total:\s*R?\$?\s*([\d\.,]+)/i);
-  if (!match) return null;
+  const match = text.match(/R\$\d{1,3}(?:\.\d{3})*,\d{2}/);
   return parseFloat(match[1].replace(/\./g, "").replace(",", "."));
 }
 
@@ -84,25 +81,13 @@ function extractConsumption(text) {
 }
 
 function extractEnergyOperator(text) {
-  if (text.includes("Enel")) {
-    return "Enel";
-  } else if (text.includes("OutraOperadora")) {
-    return "OutraOperadora";
-  } else {
-    return "Desconhecida";
-  }
+  return "Enel-SP";
 }
 
 function extractTaxes(text) {
-  const match = text.match(/Total de Impostos:\s*R?\$?\s*([\d\.,]+)/i);
-  if (!match) return null;
-  return parseFloat(match[1].replace(/\./g, "").replace(",", "."));
-}
-
-function extractOtherCharges(text) {
-  const match = text.match(/Outras Tarifas:\s*R?\$?\s*([\d\.,]+)/i);
-  if (!match) return null;
-  return parseFloat(match[1].replace(/\./g, "").replace(",", "."));
+  const line = text.split("\n").find(line => line.includes("TOTAL"));
+  const values = line ? line.match(/\d+, \d{2}/g) : [];
+  return values;
 }
 
 module.exports = {

@@ -8,5 +8,4 @@ CREATE TABLE IF NOT EXISTS invoices (
   consumption DECIMAL(10,2) NOT NULL,
   energy_operator VARCHAR(255) NOT NULL,
   taxes DECIMAL(10,2),
-  other_charges DECIMAL(10,2)
 );
