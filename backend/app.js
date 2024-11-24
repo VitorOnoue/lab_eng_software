@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const db = require("./config/db"); // Importa a configuração do banco de dados
 const authRoutes = require("./routes/auth"); // Importa as rotas de autenticação
+const multer = require("multer");
 
 const app = express();
 const PORT = 3000;
@@ -18,6 +19,10 @@ app.use("/api", authRoutes);
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
+
+// Configuração do multer para armazenar PDFs em memória
+const storage = multer.memoryStorage(); // Armazenamento em memória
+const upload = multer({ storage });
 
 // app.js
 app.post("/api/upload-pdf", upload.array("pdfs"), async (req, res) => {
