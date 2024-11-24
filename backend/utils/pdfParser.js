@@ -5,6 +5,7 @@ const pdf = require('pdf-parse');
 async function extractDataFromPdf(pdfBuffer) {
   const data = await pdf(pdfBuffer);
   const text = data.text;
+  console.log(text);
 
   const invoiceNumber = extractInvoiceNumber(text);
   const customerName = extractCustomerName(text);
