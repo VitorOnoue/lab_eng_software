@@ -22,7 +22,9 @@ app.listen(PORT, () => {
 
 // Configuração do multer para armazenar PDFs em memória
 const storage = multer.memoryStorage(); // Armazenamento em memória
-const upload = multer({ storage });
+const upload = multer({
+  storage
+});
 
 // app.js
 app.post("/api/upload-pdf", upload.array("pdfs"), async (req, res) => {
@@ -81,6 +83,12 @@ app.post("/api/upload-pdf", upload.array("pdfs"), async (req, res) => {
             // extractedData.taxes,
             14,
           ],
+          (err, results) => {
+            if (err) {
+              return reject(err); // Rejeita a Promise em caso de erro
+            }
+            resolve(results); // Resolve a Promise com os resultados
+          }
         );
       });
     } catch (error) {
