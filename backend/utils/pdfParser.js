@@ -52,8 +52,7 @@ function extractCustomerName(text) {
   for (const line of lines) {
     const lineTrim = line.trim();
     if (/^[A-ZÀ-Ú\s]+$/.test(lineTrim)) {
-      console.log("linha", lineTrim);
-      return line;
+      return lineTrim;
     }
   }
   // const match = text.split("\n")[0];
@@ -63,8 +62,8 @@ function extractCustomerName(text) {
 }
 
 function extractInvoiceDate(text) {
-  const match = text.match(/Data da Fatura:\s*(\d{2}\/\d{2}\/\d{4})/i);
-  return match ? match[1] : null;
+  const match = [...text.matchAll(/\b\d{2}\/\d{2}\/\d{4}\b/)];
+  return match[2] ? match[2][0] : null;
 }
 
 function extractDueDate(text) {
