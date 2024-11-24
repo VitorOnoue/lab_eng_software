@@ -93,7 +93,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     try {
-      console.log("montando a request");
       const response = await fetch(`http://${apiurl}/api/upload-pdf`, {
         method: "POST",
         headers: {},
@@ -102,6 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const data = await response.json();
       console.log(data);
+      console.log(response.ok);
       if (response.ok) {
         alert("PDFs enviados e processados com sucesso!");
         // Atualiza o gráfico após o upload

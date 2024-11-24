@@ -25,13 +25,8 @@ app.listen(PORT, () => {
 const storage = multer.memoryStorage(); // Armazenamento em memória
 const upload = multer({ storage });
 
-app.get("/api/hello-world", async (req, res) => {
-  return res.status(200).json({ message: "GOL" });
-});
-
 // app.js
 app.post("/api/upload-pdf", upload.array("pdfs"), async (req, res) => {
-  console.log("caiu aqui 1x");
   if (!req.files || req.files.length === 0) {
     return res.status(400).json({ message: "Nenhum arquivo foi enviado." });
   }
@@ -46,8 +41,7 @@ app.post("/api/upload-pdf", upload.array("pdfs"), async (req, res) => {
 
       if (
         !extractedData.invoiceNumber ||
-        !extractedData.invoiceDate ||
-        !extractedData.totalAmount
+        !extractedData.invoiceDate 
       ) {
         throw new Error(
           "Não foi possível extrair todos os dados necessários do PDF."
@@ -55,9 +49,11 @@ app.post("/api/upload-pdf", upload.array("pdfs"), async (req, res) => {
       }
       // Insere os dados na tabela invoices
       const query = `
-                INSERT INTO invoices (invoice_number, customer_name, invoice_date, due_date, total_amount, consumption, energy_operator, taxes, other_charges)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO invoices (invoice_number, customer_name, invoice_date, due_date, energy_operator)
+                VALUES (?, ?, ?, ?, ?)
             `;
+            // INSERT INTO invoices (invoice_number, customer_name, invoice_date, due_date, total_amount, consumption, energy_operator, taxes, other_charges)
+            //     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
       await new Promise((resolve, reject) => {
         db.query(
           query,

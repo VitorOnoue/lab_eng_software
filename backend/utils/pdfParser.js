@@ -4,17 +4,14 @@ async function extractDataFromPdf(pdfBuffer) {
   const data = await pdf(pdfBuffer);
   const text = data.text;
   console.log(text);
-debugger;
   const invoiceNumber = extractInvoiceNumber(text);
-  console.log("começando customer");
   const customerName = extractCustomerName(text);
-  console.log("passou daqui");
   const invoiceDateRaw = extractInvoiceDate(text);
   const dueDateRaw = extractDueDate(text);
   const totalAmount = extractTotalAmount(text);
-  const consumption = extractConsumption(text);
+  // const consumption = extractConsumption(text);
   const energyOperator = extractEnergyOperator(text);
-  const taxes = extractTaxes(text);
+  // const taxes = extractTaxes(text);
   const invoiceDate = formatDateToMySQL(invoiceDateRaw);
   const dueDate = formatDateToMySQL(dueDateRaw);
 
@@ -24,9 +21,9 @@ debugger;
     invoiceDate,
     dueDate,
     totalAmount,
-    consumption,
+    // consumption,
     energyOperator,
-    taxes,
+    // taxes,
   };
 }
 
@@ -43,7 +40,6 @@ function extractInvoiceNumber(text) {
 }
 
 function extractCustomerName(text) {
-  // MEXER
   const lines = text.split("\n");
   for (const line of lines) {
     const lineTrim = line.trim();
@@ -51,9 +47,6 @@ function extractCustomerName(text) {
       return lineTrim;
     }
   }
-  // const match = text.split("\n")[0];
-  // // const match = text.match(/Nome do Cliente:\s*(.+)/i);
-  // return match ? match[1].trim() : null;
   return null;
 }
 
@@ -69,6 +62,7 @@ function extractDueDate(text) {
 
 function extractTotalAmount(text) {
   const match = text.match(/R\$\d{1,3}(?:\.\d{3})*,\d{2}/);
+  return match ? match[0] : null;
   return parseFloat(match[1].replace(/\./g, "").replace(",", "."));
 }
 
