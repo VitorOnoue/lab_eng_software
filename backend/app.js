@@ -3,8 +3,6 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const db = require("./config/db"); // Importa a configuração do banco de dados
 const authRoutes = require("./routes/auth"); // Importa as rotas de autenticação
-const multer = require("multer");
-const pdf = require("pdf-parse"); // Importa a biblioteca para ler PDFs
 
 const app = express();
 const PORT = 3000;
@@ -21,27 +19,37 @@ app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
 
-// Configuração do multer para armazenar PDFs em memória
-const storage = multer.memoryStorage(); // Armazenamento em memória
-const upload = multer({ storage });
-
 // app.js
 app.post("/api/upload-pdf", upload.array("pdfs"), async (req, res) => {
   if (!req.files || req.files.length === 0) {
-    return res.status(400).json({ message: "Nenhum arquivo foi enviado." });
+    return res.status(400).json({
+      message: "Nenhum arquivo foi enviado."
+    });
   }
 
   const queries = req.files.map(async (file) => {
-    const { originalname, buffer } = file;
+    const {
+      originalname,
+      buffer
+    } = file;
 
     try {
       console.log("antes do data");
       const extractedData = await extractDataFromPdf(buffer);
-      console.log(extractedData);
+      console.log(extractedData.invoiceNumber);
+      console.log(extractedData.customerName);
+      console.log(extractedData.invoiceDate);
+      console.log(extractedData.dueDate);
+      console.log(extractedData.totalAmount);
+      console.log(extractedData.energyOperator);
 
       if (
         !extractedData.invoiceNumber ||
-        !extractedData.invoiceDate 
+        !extractedData.customerName ||
+        !extractedData.invoiceDate ||
+        !extractedData.dueDate ||
+        !extractedData.totalAmount ||
+        !extractedData.energyOperator
       ) {
         throw new Error(
           "Não foi possível extrair todos os dados necessários do PDF."
@@ -49,11 +57,11 @@ app.post("/api/upload-pdf", upload.array("pdfs"), async (req, res) => {
       }
       // Insere os dados na tabela invoices
       const query = `
-                INSERT INTO invoices (invoice_number, customer_name, invoice_date, due_date, energy_operator)
-                VALUES (?, ?, ?, ?, ?)
+                INSERT INTO invoices (invoice_number, customer_name, invoice_date, due_date, total_amount, energy_operator, user_id)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
             `;
-            // INSERT INTO invoices (invoice_number, customer_name, invoice_date, due_date, total_amount, consumption, energy_operator, taxes, other_charges)
-            //     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      // INSERT INTO invoices (invoice_number, customer_name, invoice_date, due_date, total_amount, consumption, energy_operator, taxes, other_charges)
+      //     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
       await new Promise((resolve, reject) => {
         db.query(
           query,
@@ -63,21 +71,11 @@ app.post("/api/upload-pdf", upload.array("pdfs"), async (req, res) => {
             extractedData.invoiceDate,
             extractedData.dueDate,
             extractedData.totalAmount,
-            extractedData.consumption,
+            // extractedData.consumption,
             extractedData.energyOperator,
-            extractedData.taxes,
-            extractedData.otherCharges,
+            // extractedData.taxes,
+            14,
           ],
-          (err, results) => {
-            if (err) {
-              if (err.code === "ER_DUP_ENTRY") {
-                return reject(new Error("Fatura duplicada."));
-              } else {
-                return reject(err);
-              }
-            }
-            resolve(results);
-          }
         );
       });
     } catch (error) {
@@ -87,23 +85,27 @@ app.post("/api/upload-pdf", upload.array("pdfs"), async (req, res) => {
 
   try {
     await Promise.all(queries);
-    res.json({ message: "Dados dos PDFs salvos com sucesso!" });
+    res.json({
+      message: "Dados dos PDFs salvos com sucesso!"
+    });
+    const response = await fetch(`http://${apiurl}/api/expenses-per-month`, {
+      headers: {},
+    });
+    const data = await response.json();
+
+    if (response.ok) {
+      renderChart(data);
+    } else {
+      console.error("Erro ao obter dados das despesas:", data.message);
+    }
   } catch (err) {
     res
       .status(500)
-      .json({ message: "Erro ao salvar os dados no banco de dados." });
+      .json({
+        message: "Erro ao salvar os dados no banco de dados."
+      });
   }
 });
-
-function extractEnergyOperator(text) {
-  if (text.includes("Enel")) {
-    return "Enel";
-  } else if (text.includes("OutraOperadora")) {
-    return "OutraOperadora";
-  } else {
-    return "Desconhecida";
-  }
-}
 
 // **Adicionando o endpoint /api/expenses-per-month**
 app.get("/api/expenses-per-month", async (req, res) => {
@@ -114,6 +116,7 @@ app.get("/api/expenses-per-month", async (req, res) => {
                 SUM(total_amount) as total_expenses,
                 SUM(consumption) as total_consumption
             FROM invoices
+            WHERE user_id = 14
             GROUP BY month
             ORDER BY month;
         `;
@@ -127,12 +130,16 @@ app.get("/api/expenses-per-month", async (req, res) => {
     });
     res.json(results);
   } catch (error) {
-    res.status(500).json({ message: "Erro ao obter dados das despesas." });
+    res.status(500).json({
+      message: "Erro ao obter dados das despesas."
+    });
   }
 });
 
 // app.js
-const { extractDataFromPdf } = require("./utils/pdfParser"); // Mova as funções de extração para um módulo separado
+const {
+  extractDataFromPdf
+} = require("./utils/pdfParser"); // Mova as funções de extração para um módulo separado
 
 // Função para converter a data para o formato MySQL 'YYYY-MM-DD'
 function formatDateToMySQL(dateString) {

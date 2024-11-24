@@ -62,8 +62,7 @@ function extractDueDate(text) {
 
 function extractTotalAmount(text) {
   const match = text.match(/R\$\d{1,3}(?:\.\d{3})*,\d{2}/);
-  return match ? match[0] : null;
-  return parseFloat(match[1].replace(/\./g, "").replace(",", "."));
+  return parseFloat(match[0].replace("R$", "").replace(",", "."));
 }
 
 function extractConsumption(text) {

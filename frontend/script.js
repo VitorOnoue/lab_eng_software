@@ -1,4 +1,4 @@
-const apiurl = "3.87.240.227"; // IP AQUI
+const apiurl = "54.235.30.195"; // IP AQUI
 
 document.addEventListener("DOMContentLoaded", function () {
   const loginContainer = document.getElementById("login-container");
@@ -15,8 +15,13 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       const response = await fetch(`http://${apiurl}/api/login`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          username,
+          password
+        }),
       });
 
       const data = await response.json();
@@ -48,8 +53,13 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       const response = await fetch(`http://${apiurl}/api/register`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          username,
+          password
+        }),
       });
 
       const data = await response.json();
@@ -93,6 +103,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     try {
+      const username = document.getElementById("usuario").value;
+      console.log(username);
       const response = await fetch(`http://${apiurl}/api/upload-pdf`, {
         method: "POST",
         headers: {},
@@ -145,8 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
       type: "line",
       data: {
         labels: data.map((item) => item.month),
-        datasets: [
-          {
+        datasets: [{
             label: "Despesas Totais (R$)",
             data: data.map((item) => item.total_expenses),
             backgroundColor: "rgba(255, 99, 132, 0.2)",
