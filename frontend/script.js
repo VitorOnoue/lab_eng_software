@@ -1,4 +1,4 @@
-const apiurl = "54.235.30.195"; // IP AQUI
+const apiurl = "54.174.87.178"; // IP AQUI
 
 document.addEventListener("DOMContentLoaded", function () {
   const loginContainer = document.getElementById("login-container");
@@ -112,8 +112,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       const data = await response.json();
-      console.log(data);
-      console.log(response.ok);
       if (response.ok) {
         alert("PDFs enviados e processados com sucesso!");
         // Atualiza o gráfico após o upload
@@ -217,6 +215,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       const data = await response.json();
+      console.log(response.ok);
 
       if (response.ok) {
         displayForecast(data);
@@ -243,11 +242,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     data.expenses.forEach(item => {
       const row = document.createElement('tr');
+      console.log(item.month);
+      console.log(item.originalExpense);
+      console.log(item.estimatedExpense);
+      console.log(item.consumption ? item.consumption : 'N/A');
       row.innerHTML = `
             <td>${item.month}</td>
-            <td>R$ ${item.originalExpense.toFixed(2)}</td>
-            <td>R$ ${item.estimatedExpense.toFixed(2)}</td>
-            <td>${item.consumption ? item.consumption.toFixed(2) : 'N/A'}</td>
+            <td>R$ ${item.originalExpense}</td>
+            <td>R$ ${item.estimatedExpense}</td>
+            <td>${item.consumption ? item.consumption : 'N/A'}</td>
         `;
       tbody.appendChild(row);
     });

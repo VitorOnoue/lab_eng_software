@@ -83,12 +83,13 @@ exports.getFutureExpenses = async (req, res) => {
 
     // Calcula as despesas futuras estimadas aplicando a inflação
     const futureExpenses = historicalData.map(item => {
+      const originalExpense = item.total_expenses;
       const estimatedExpense = item.total_expenses * (1 + inflationRate);
       console.log("estimated expense = ", estimatedExpense);
       return {
         month: item.month,
-        originalExpense: item.total_expenses,
-        estimatedExpense: parseFloat(estimatedExpense.toFixed(2)),
+        originalExpense: originalExpense,
+        estimatedExpense: estimatedExpense,
         consumption: item.total_consumption
       };
     });
