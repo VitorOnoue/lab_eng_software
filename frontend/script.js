@@ -1,4 +1,4 @@
-const apiurl = "34.201.105.53"; // IP AQUI
+const apiurl = "100.26.51.230"; // IP AQUI
 
 document.addEventListener("DOMContentLoaded", function () {
   const loginContainer = document.getElementById("login-container");
@@ -211,7 +211,6 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById('show-forecast-btn').addEventListener('click', async function () {
     try {
       const username = document.getElementById("usuario").value;
-      console.log("username indo", username);
       const response = await fetch(`http://${apiurl}/api/future-expenses?username=${username}`, {
         headers: {},
       });
@@ -243,10 +242,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     data.expenses.forEach(item => {
       const row = document.createElement('tr');
-      console.log(item.month);
-      console.log(item.originalExpense);
-      console.log(item.estimatedExpense);
-      console.log(item.consumption ? item.consumption : 'N/A');
       row.innerHTML = `
             <td>${item.month}</td>
             <td>R$ ${item.originalExpense}</td>

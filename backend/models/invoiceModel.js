@@ -34,7 +34,6 @@ class Invoice {
   }
 
   static async getExpensesPerMonth(userId) {
-    console.log(userId);
     const query = `
       SELECT 
         DATE_FORMAT(invoice_date, '%Y-%m') as month,

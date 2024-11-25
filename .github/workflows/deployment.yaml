@@ -23,7 +23,6 @@ jobs:
           rm -rf lab_eng_software
           git clone https://github.com/VitorOnoue/lab_eng_software.git
           cd lab_eng_software
-          git switch teste
           sudo cp -r frontend /var/www/html
           cd backend
           pm2 stop app.js

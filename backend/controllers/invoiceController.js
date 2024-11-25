@@ -80,21 +80,16 @@ exports.getFutureExpenses = async (req, res) => {
   try {
     // Obtém os dados históricos das faturas
     const { username } = req.query;
-    console.log("username chegando", username);
     const userId = await User.findByUsername(username);
-    console.log("teste userid", userId);
     const historicalData = await Invoice.getExpensesPerMonth(userId.id);
-    console.log("historical data = ", historicalData);
 
     // Obtém a taxa de inflação atual
     const inflationRate = await getCurrentInflationRate();
-    console.log(`Taxa de inflação atual: ${(inflationRate * 100).toFixed(2)}%`);
 
     // Calcula as despesas futuras estimadas aplicando a inflação
     const futureExpenses = historicalData.map(item => {
       const originalExpense = item.total_expenses;
       const estimatedExpense = item.total_expenses * (1 + inflationRate);
-      console.log("estimated expense = ", estimatedExpense);
       return {
         month: item.month,
         originalExpense: originalExpense.replace(".", ","),
@@ -102,7 +97,6 @@ exports.getFutureExpenses = async (req, res) => {
         consumption: item.total_consumption
       };
     });
-    console.log("future expenses = ", futureExpenses);
     res.json({
       inflationRate: inflationRate,
       expenses: futureExpenses
