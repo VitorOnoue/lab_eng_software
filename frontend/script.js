@@ -209,4 +209,48 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.querySelector(".chart-container").classList.add("visible");
   }
+
+  document.getElementById('show-forecast-btn').addEventListener('click', async function () {
+    try {
+      const response = await fetch(`http://${apiurl}/api/future-expenses`, {
+        headers: {},
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        displayForecast(data);
+      } else {
+        console.error('Erro ao obter despesas futuras:', data.message);
+        alert('Erro ao obter despesas futuras: ' + data.message);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar despesas futuras:', error);
+      alert('Erro ao buscar despesas futuras.');
+    }
+  });
+
+  function displayForecast(data) {
+    const forecastContainer = document.getElementById('forecast-results');
+    forecastContainer.style.display = 'block';
+    forecastContainer.innerHTML = '';
+
+    // Exibir a taxa de inflação atual
+    const inflationInfo = document.createElement('p');
+    inflationInfo.innerText = `Taxa de Inflação Atual: ${(data.inflationRate * 100).toFixed(2)}%`;
+    forecastContainer.appendChild(inflationInfo);
+
+    data.expenses.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'forecast-item';
+      div.innerHTML = `
+        <p>Mês: ${item.month}</p>
+        <p>Despesa Original: R$ ${item.originalExpense.toFixed(2)}</p>
+        <p>Despesa Estimada com Inflação: R$ ${item.estimatedExpense.toFixed(2)}</p>
+        <p>Consumo: ${item.consumption ? item.consumption.toFixed(2) : 'N/A'} kWh</p>
+        <hr>
+      `;
+      forecastContainer.appendChild(div);
+    });
+  }
 });

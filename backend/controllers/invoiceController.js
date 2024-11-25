@@ -1,5 +1,6 @@
 const Invoice = require('../models/invoiceModel');
 const { extractDataFromPdf } = require('../utils/pdfParser');
+const { getCurrentInflationRate } = require('../utils/inflationApi');
 
 // Upload e processamento de PDFs
 exports.uploadPdf = async (req, res) => {
@@ -41,5 +42,35 @@ exports.getExpensesPerMonth = async (req, res) => {
   } catch (error) {
     console.error('Erro ao obter dados das despesas:', error);
     res.status(500).json({ message: 'Erro ao obter dados das despesas.' });
+  }
+};
+
+exports.getFutureExpenses = async (req, res) => {
+  try {
+    // Obtém os dados históricos das faturas
+    const historicalData = await Invoice.getExpensesPerMonth();
+
+    // Obtém a taxa de inflação atual
+    const inflationRate = await getCurrentInflationRate();
+    console.log(`Taxa de inflação atual: ${(inflationRate * 100).toFixed(2)}%`);
+
+    // Calcula as despesas futuras estimadas aplicando a inflação
+    const futureExpenses = historicalData.map(item => {
+      const estimatedExpense = item.total_expenses * (1 + inflationRate);
+      return {
+        month: item.month,
+        originalExpense: item.total_expenses,
+        estimatedExpense: parseFloat(estimatedExpense.toFixed(2)),
+        consumption: item.total_consumption
+      };
+    });
+
+    res.json({
+      inflationRate: inflationRate,
+      expenses: futureExpenses
+    });
+  } catch (error) {
+    console.error('Erro ao obter despesas futuras:', error.message);
+    res.status(500).json({ message: 'Erro ao obter despesas futuras.' });
   }
 };

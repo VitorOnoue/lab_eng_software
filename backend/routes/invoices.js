@@ -1,3 +1,5 @@
+// backend/routes/invoices.js
+
 const express = require('express');
 const router = express.Router();
 const invoiceController = require('../controllers/invoiceController');
@@ -12,5 +14,8 @@ router.post('/upload-pdf', upload.array('pdfs'), invoiceController.uploadPdf);
 
 // Rota para obter despesas por mês
 router.get('/expenses-per-month', invoiceController.getExpensesPerMonth);
+
+// Nova rota para obter despesas futuras estimadas
+router.get('/future-expenses', invoiceController.getFutureExpenses);
 
 module.exports = router;

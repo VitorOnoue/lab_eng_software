@@ -167,4 +167,16 @@ body {
       width: 70%;
     }
   }
+
+  .forecast-section {
+    margin: 20px;
+  }
+  
+  .forecast-item {
+    margin-bottom: 10px;
+  }
+  
+  .forecast-item p {
+    margin: 5px 0;
+  }
   
