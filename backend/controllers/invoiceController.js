@@ -97,8 +97,8 @@ exports.getFutureExpenses = async (req, res) => {
       console.log("estimated expense = ", estimatedExpense);
       return {
         month: item.month,
-        originalExpense: originalExpense,
-        estimatedExpense: estimatedExpense,
+        originalExpense: originalExpense.replace(".", ","),
+        estimatedExpense: estimatedExpense.toFixed(2).replace(".", ","),
         consumption: item.total_consumption
       };
     });
