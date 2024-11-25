@@ -29,6 +29,7 @@ exports.uploadPdf = async (req, res) => {
         !extractedData.invoiceDate ||
         !extractedData.dueDate ||
         !extractedData.totalAmount ||
+        !extractedData.consumption ||
         !extractedData.energyOperator
       ) {
         throw new Error(

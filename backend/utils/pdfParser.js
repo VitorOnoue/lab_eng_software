@@ -10,7 +10,6 @@ async function extractDataFromPdf(pdfBuffer) {
   const dueDateRaw = extractDueDate(text);
   const totalAmount = extractTotalAmount(text);
   const consumption = extractConsumption(text);
-  console.log(consumption);
   const energyOperator = extractEnergyOperator(text);
   const invoiceDate = formatDateToMySQL(invoiceDateRaw);
   const dueDate = formatDateToMySQL(dueDateRaw);
