@@ -3,12 +3,14 @@ const pdf = require("pdf-parse");
 async function extractDataFromPdf(pdfBuffer) {
   const data = await pdf(pdfBuffer);
   const text = data.text;
+  console.log(text);
   const invoiceNumber = extractInvoiceNumber(text);
   const customerName = extractCustomerName(text);
   const invoiceDateRaw = extractInvoiceDate(text);
   const dueDateRaw = extractDueDate(text);
   const totalAmount = extractTotalAmount(text);
-  // const consumption = extractConsumption(text);
+  const consumption = extractConsumption(text);
+  console.log(consumption);
   const energyOperator = extractEnergyOperator(text);
   const invoiceDate = formatDateToMySQL(invoiceDateRaw);
   const dueDate = formatDateToMySQL(dueDateRaw);
@@ -19,7 +21,7 @@ async function extractDataFromPdf(pdfBuffer) {
     invoiceDate,
     dueDate,
     totalAmount,
-    // consumption,
+    consumption,
     energyOperator,
   };
 }
@@ -63,9 +65,9 @@ function extractTotalAmount(text) {
 }
 
 function extractConsumption(text) {
-  const match = text.match(/Consumo \(kWh\):\s*([\d\.,]+)/i);
-  if (!match) return null;
-  return parseFloat(match[1].replace(/\./g, "").replace(",", "."));
+  const match = text.match(/^KWH.*$/m);
+  const value = match[0].match(/\b\d+,\d{3}\b/)
+  return value ? value[0] : null;
 }
 
 function extractEnergyOperator(text) {
