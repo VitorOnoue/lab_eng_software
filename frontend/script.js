@@ -1,4 +1,4 @@
-const apiurl = "54.174.87.178"; // IP AQUI
+const apiurl = "34.201.105.53"; // IP AQUI
 
 document.addEventListener("DOMContentLoaded", function () {
   const loginContainer = document.getElementById("login-container");

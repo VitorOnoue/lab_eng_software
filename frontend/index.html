@@ -60,15 +60,12 @@
             <input type="file" id="upload-pdfs" accept="application/pdf" multiple style="display:none"
                 onchange="handlePdfUpload(event)">
         </div>
-
+        <!-- Botão de inflação -->
         <div class="forecast-section">
             <button id="show-forecast-btn">Mostrar Previsão de Despesas</button>
             <div id="forecast-results" style="display:none;">
-                <!-- Título da seção -->
                 <h3>Previsão de Despesas Futuras</h3>
-                <!-- Parágrafo para exibir a taxa de inflação atual -->
                 <p id="inflation-info"></p>
-                <!-- Tabela para exibir os resultados -->
                 <table id="forecast-table">
                     <thead>
                         <tr>

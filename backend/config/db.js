@@ -15,12 +15,3 @@ db.connect((err) => {
 });
 
 module.exports = db; // Exporta a conexão com o banco
-
-
-
-/*
-db instance identifier eng-db
-master username admin
-senha engenhariasoftwaretaosso
-endpoint eng-db.c5mu0ekkaz0m.us-east-1.rds.amazonaws.com
-*/

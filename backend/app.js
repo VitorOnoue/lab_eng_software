@@ -3,7 +3,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const db = require("./config/db"); // Importa a configuração do banco de dados
 const authRoutes = require("./routes/auth"); // Importa as rotas de autenticação
 const invoiceRoutes = require("./routes/invoices"); // Importa as rotas de faturas
 

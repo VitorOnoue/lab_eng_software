@@ -9,8 +9,8 @@ class Invoice {
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
 
-    // INSERT INTO invoices (invoice_number, customer_name, invoice_date, due_date, total_amount, consumption, energy_operator, taxes, other_charges)
-    //   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    // INSERT INTO invoices (invoice_number, customer_name, invoice_date, due_date, total_amount, consumption, energy_operator, user_id)
+    //   VALUES (?, ?, ?, ?, ?, ?, ?, ?)
 
     const values = [
       data.invoiceNumber,
@@ -20,7 +20,6 @@ class Invoice {
       data.totalAmount,
       // data.consumption,
       data.energyOperator,
-      // data.taxes,
       14,
     ];
 

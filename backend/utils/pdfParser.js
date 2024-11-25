@@ -10,7 +10,6 @@ async function extractDataFromPdf(pdfBuffer) {
   const totalAmount = extractTotalAmount(text);
   // const consumption = extractConsumption(text);
   const energyOperator = extractEnergyOperator(text);
-  // const taxes = extractTaxes(text);
   const invoiceDate = formatDateToMySQL(invoiceDateRaw);
   const dueDate = formatDateToMySQL(dueDateRaw);
 
@@ -22,7 +21,6 @@ async function extractDataFromPdf(pdfBuffer) {
     totalAmount,
     // consumption,
     energyOperator,
-    // taxes,
   };
 }
 
@@ -72,12 +70,6 @@ function extractConsumption(text) {
 
 function extractEnergyOperator(text) {
   return "Enel-SP";
-}
-
-function extractTaxes(text) {
-  const line = text.split("\n").find(line => line.includes("TOTAL"));
-  const values = line ? line.match(/\d+, \d{2}/g) : [];
-  return values;
 }
 
 module.exports = {

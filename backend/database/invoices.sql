@@ -7,7 +7,6 @@ CREATE TABLE IF NOT EXISTS invoices (
   total_amount DECIMAL(10,2) NOT NULL,
   consumption DECIMAL(10,2) NOT NULL,
   energy_operator VARCHAR(255) NOT NULL,
-  taxes DECIMAL(10,2),
   user_id int,
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
