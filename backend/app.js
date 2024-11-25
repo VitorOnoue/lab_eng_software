@@ -85,12 +85,13 @@ app.post("/api/upload-pdf", upload.array("pdfs"), async (req, res) => {
           ],
           (err, results) => {
             if (err) {
+              console.log(err);
               return reject(err); // Rejeita a Promise em caso de erro
             }
+            console.log("passou daqui");
             resolve(results); // Resolve a Promise com os resultados
           }
         );
-        f
       });
     } catch (error) {
       throw error;
@@ -103,6 +104,7 @@ app.post("/api/upload-pdf", upload.array("pdfs"), async (req, res) => {
       message: "Dados dos PDFs salvos com sucesso!"
     });
   } catch (err) {
+    console.log(err);
     res
       .status(500)
       .json({
@@ -144,31 +146,3 @@ app.get("/api/expenses-per-month", async (req, res) => {
 const {
   extractDataFromPdf
 } = require("./utils/pdfParser"); // Mova as funções de extração para um módulo separado
-
-// Função para converter a data para o formato MySQL 'YYYY-MM-DD'
-function formatDateToMySQL(dateString) {
-  if (!dateString) return null;
-  const [day, month, year] = dateString.split("/");
-  return `${year}-${month}-${day}`;
-}
-
-// Função para extrair o valor da fatura
-function extractInvoiceValue(text) {
-  const valueMatch = text.match(/Valor da Fatura:\s*R?\$?\s*([\d\.,]+)/i);
-  if (!valueMatch) {
-    console.error("Valor da fatura não encontrado no texto.");
-    return null;
-  }
-  const valueString = valueMatch[1].replace(/\./g, "").replace(",", ".");
-  return parseFloat(valueString);
-}
-
-// Função para extrair a data da fatura
-function extractInvoiceDate(text) {
-  const dateMatch = text.match(/Data da Fatura:\s*(\d{2}\/\d{2}\/\d{4})/i);
-  if (!dateMatch) {
-    console.error("Data da fatura não encontrada no texto.");
-    return null;
-  }
-  return dateMatch[1];
-}
