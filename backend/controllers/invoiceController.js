@@ -13,7 +13,8 @@ exports.uploadPdf = async (req, res) => {
       message: "Nenhum arquivo foi enviado."
     });
   }
-
+  const username = req.body.username;
+  console.log(username);
   const queries = req.files.map(async (file) => {
     const {
       originalname,

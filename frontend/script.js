@@ -102,9 +102,10 @@ document.addEventListener("DOMContentLoaded", function () {
       formData.append("pdfs", file);
     }
 
+    const username = document.getElementById("usuario").value;
+    formData.append("username", username);
     try {
-      const username = document.getElementById("usuario").value;
-      console.log(username);
+      
       const response = await fetch(`http://${apiurl}/api/upload-pdf`, {
         method: "POST",
         headers: {},
