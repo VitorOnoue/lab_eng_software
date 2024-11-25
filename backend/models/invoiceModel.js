@@ -6,7 +6,7 @@ class Invoice {
   static async create(data) {
     const query = `
       INSERT INTO invoices (invoice_number, customer_name, invoice_date, due_date, total_amount, energy_operator, user_id)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
 
     // INSERT INTO invoices (invoice_number, customer_name, invoice_date, due_date, total_amount, consumption, energy_operator, taxes, other_charges)

@@ -10,7 +10,7 @@ const {
 exports.uploadPdf = async (req, res) => {
   if (!req.files || req.files.length === 0) {
     return res.status(400).json({
-      message: 'Nenhum arquivo foi enviado.'
+      message: "Nenhum arquivo foi enviado."
     });
   }
 
@@ -23,8 +23,17 @@ exports.uploadPdf = async (req, res) => {
     try {
       const extractedData = await extractDataFromPdf(buffer);
 
-      if (!extractedData.invoiceNumber || !extractedData.invoiceDate || !extractedData.totalAmount) {
-        throw new Error('Não foi possível extrair todos os dados necessários do PDF.');
+      if (
+        !extractedData.invoiceNumber ||
+        !extractedData.customerName ||
+        !extractedData.invoiceDate ||
+        !extractedData.dueDate ||
+        !extractedData.totalAmount ||
+        !extractedData.energyOperator
+      ) {
+        throw new Error(
+          "Não foi possível extrair todos os dados necessários do PDF."
+        );
       }
 
       // Insere os dados na tabela invoices
@@ -37,13 +46,15 @@ exports.uploadPdf = async (req, res) => {
   try {
     await Promise.all(queries);
     res.json({
-      message: 'Dados dos PDFs salvos com sucesso!'
+      message: "Dados dos PDFs salvos com sucesso!"
     });
   } catch (err) {
-    console.error('Erro ao salvar os dados:', err);
-    res.status(500).json({
-      message: 'Erro ao salvar os dados no banco de dados.'
-    });
+    console.log(err);
+    res
+      .status(500)
+      .json({
+        message: "Erro ao salvar os dados no banco de dados."
+      });
   }
 };
 

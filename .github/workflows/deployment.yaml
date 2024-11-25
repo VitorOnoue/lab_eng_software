@@ -23,25 +23,9 @@ jobs:
           rm -rf lab_eng_software
           git clone https://github.com/VitorOnoue/lab_eng_software.git
           cd lab_eng_software
-          git switch teste
+          git switch inflacao
           sudo cp -r frontend /var/www/html
           cd backend
           pm2 stop app.js
           pm2 start app.js
           EOF
-
-
-
-
-
-      # - name: install vercel CLI
-      #   run: npm install --global vercel
-
-      # - name: pull vercel env info
-      #   run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-
-      # - name: build project artifacts
-      #   run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-      
-      # - name: deploy project artifacts
-      #   run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
