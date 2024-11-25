@@ -14,7 +14,6 @@ exports.uploadPdf = async (req, res) => {
     });
   }
   const username = req.body.username;
-  console.log(username);
   const queries = req.files.map(async (file) => {
     const {
       originalname,
@@ -22,7 +21,8 @@ exports.uploadPdf = async (req, res) => {
     } = file;
 
     try {
-      const extractedData = await extractDataFromPdf(buffer);
+      const extractedData = await extractDataFromPdf(buffer, username);
+      console.log(extractedData.userId);
 
       if (
         !extractedData.invoiceNumber ||
@@ -31,7 +31,8 @@ exports.uploadPdf = async (req, res) => {
         !extractedData.dueDate ||
         !extractedData.totalAmount ||
         !extractedData.consumption ||
-        !extractedData.energyOperator
+        !extractedData.energyOperator ||
+        !extractedData.userId
       ) {
         throw new Error(
           "Não foi possível extrair todos os dados necessários do PDF."

@@ -17,7 +17,7 @@ class Invoice {
       data.totalAmount,
       data.consumption,
       data.energyOperator,
-      14,
+      data.userId,
     ];
 
     return new Promise((resolve, reject) => {

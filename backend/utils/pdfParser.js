@@ -1,18 +1,20 @@
 const pdf = require("pdf-parse");
+const User = require("../models/userModels");
 
-async function extractDataFromPdf(pdfBuffer) {
+async function extractDataFromPdf(pdfBuffer, username) {
   const data = await pdf(pdfBuffer);
   const text = data.text;
-  console.log(text);
   const invoiceNumber = extractInvoiceNumber(text);
   const customerName = extractCustomerName(text);
   const invoiceDateRaw = extractInvoiceDate(text);
+  const invoiceDate = formatDateToMySQL(invoiceDateRaw);
   const dueDateRaw = extractDueDate(text);
+  const dueDate = formatDateToMySQL(dueDateRaw);
   const totalAmount = extractTotalAmount(text);
   const consumption = extractConsumption(text);
-  const energyOperator = extractEnergyOperator(text);
-  const invoiceDate = formatDateToMySQL(invoiceDateRaw);
-  const dueDate = formatDateToMySQL(dueDateRaw);
+  const energyOperator = extractEnergyOperator();
+  const userId = await extractUserId(username);
+
 
   return {
     invoiceNumber,
@@ -22,6 +24,7 @@ async function extractDataFromPdf(pdfBuffer) {
     totalAmount,
     consumption,
     energyOperator,
+    userId,
   };
 }
 
@@ -69,8 +72,19 @@ function extractConsumption(text) {
   return parseFloat(value[1].replace(",", "."));
 }
 
-function extractEnergyOperator(text) {
+function extractEnergyOperator() {
   return "Enel-SP";
+}
+
+async function extractUserId(username) {
+  try {
+    const userId = await User.findByUsername(username);
+    console.log(userId.id);
+    return userId.id;
+  } catch (error) {
+    console.error('Erro ao buscar ID do usuário:', error.message);
+    throw error;
+  }
 }
 
 module.exports = {
