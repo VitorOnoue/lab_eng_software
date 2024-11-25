@@ -233,24 +233,23 @@ document.addEventListener("DOMContentLoaded", function () {
   function displayForecast(data) {
     const forecastContainer = document.getElementById('forecast-results');
     forecastContainer.style.display = 'block';
-    forecastContainer.innerHTML = '';
 
-    // Exibir a taxa de inflação atual
-    const inflationInfo = document.createElement('p');
+    // Atualiza a informação da taxa de inflação
+    const inflationInfo = document.getElementById('inflation-info');
     inflationInfo.innerText = `Taxa de Inflação Atual: ${(data.inflationRate * 100).toFixed(2)}%`;
-    forecastContainer.appendChild(inflationInfo);
+
+    const tbody = document.querySelector('#forecast-table tbody');
+    tbody.innerHTML = ''; // Limpa o conteúdo anterior, se houver
 
     data.expenses.forEach(item => {
-      const div = document.createElement('div');
-      div.className = 'forecast-item';
-      div.innerHTML = `
-        <p>Mês: ${item.month}</p>
-        <p>Despesa Original: R$ ${item.originalExpense.toFixed(2)}</p>
-        <p>Despesa Estimada com Inflação: R$ ${item.estimatedExpense.toFixed(2)}</p>
-        <p>Consumo: ${item.consumption ? item.consumption.toFixed(2) : 'N/A'} kWh</p>
-        <hr>
-      `;
-      forecastContainer.appendChild(div);
+      const row = document.createElement('tr');
+      row.innerHTML = `
+            <td>${item.month}</td>
+            <td>R$ ${item.originalExpense.toFixed(2)}</td>
+            <td>R$ ${item.estimatedExpense.toFixed(2)}</td>
+            <td>${item.consumption ? item.consumption.toFixed(2) : 'N/A'}</td>
+        `;
+      tbody.appendChild(row);
     });
   }
 });

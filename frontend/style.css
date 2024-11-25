@@ -1,182 +1,199 @@
 body {
-    background-color: #f0f4f8;
-    margin: 0;
-    font-family: 'Roboto', sans-serif;
-    color: #333;
-  }
-  
-  /* Botão de upload */
-  .welcome-screen {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    min-height: 100vh;
-  }
-  
-  .welcome-screen .upload-button {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-  }
-  
-  .welcome-screen .upload-button button {
-    padding: 10px 20px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .welcome-screen .upload-button button:hover {
-    background-color: #0056b3;
-  }
-  
-  .welcome-screen h2 {
-    font-size: 36px;
-    margin-top: 100px;
-    color: #007BFF;
-  }
-  
-  .welcome-screen p {
-    font-size: 20px;
-    margin-bottom: 20px;
-    color: #555;
-  }
-  
-  /* Gráfico */
+  background-color: #f0f4f8;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+}
+
+/* Botão de upload */
+.welcome-screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+}
+
+.welcome-screen .upload-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.welcome-screen .upload-button button {
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.welcome-screen .upload-button button:hover {
+  background-color: #0056b3;
+}
+
+.welcome-screen h2 {
+  font-size: 36px;
+  margin-top: 100px;
+  color: #007BFF;
+}
+
+.welcome-screen p {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #555;
+}
+
+/* Gráfico */
+.chart-container {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  width: 95%;
+  max-width: 1200px;
+  margin: 20px auto;
+}
+
+.chart-container canvas {
+  width: 100% !important;
+  height: 500px !important;
+}
+
+/* Contêineres de login e registro */
+.login-container,
+.register-container {
+  background-color: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  margin: 100px auto;
+}
+
+.register-container {
+  display: none;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 30px;
+  color: #007BFF;
+}
+
+label {
+  font-size: 16px;
+  display: block;
+  margin-bottom: 5px;
+  text-align: left;
+  color: #333;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  padding: 12px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 50%;
+  font-size: 18px;
+  display: block;
+  margin: 20px auto;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+.login-container p,
+.register-container p {
+  text-align: center;
+  margin-top: 15px;
+}
+
+p {
+  font-size: 16px;
+  color: #555;
+}
+
+a {
+  color: #007BFF;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.chart-container {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.chart-container.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
   .chart-container {
-    background-color: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    width: 95%;
-    max-width: 1200px;
-    margin: 20px auto;
-  }
-  
-  .chart-container canvas {
-    width: 100% !important;
-    height: 500px !important;
-  }
-  
-  /* Contêineres de login e registro */
-  .login-container,
-  .register-container {
-    background-color: white;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    width: 400px;
-    margin: 100px auto;
-  }
-  
-  .register-container {
-    display: none;
-  }
-  
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 30px;
-    color: #007BFF;
-  }
-  
-  label {
-    font-size: 16px;
-    display: block;
-    margin-bottom: 5px;
-    text-align: left;
-    color: #333;
-  }
-  
-  input[type="text"],
-  input[type="password"] {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  button {
-    padding: 12px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 50%;
-    font-size: 18px;
-    display: block;
-    margin: 20px auto;
-  }
-  
-  button:hover {
-    background-color: #218838;
-  }
-  
-  .login-container p,
-  .register-container p {
-    text-align: center;
-    margin-top: 15px;
-  }
-  
-  p {
-    font-size: 16px;
-    color: #555;
-  }
-  
-  a {
-    color: #007BFF;
-    text-decoration: none;
-  }
-  
-  a:hover {
-    text-decoration: underline;
-  }
-  
-  .chart-container {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-  }
-  
-  .chart-container.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  
-  @media (max-width: 768px) {
-    .chart-container {
-      padding: 20px;
-    }
-  
-    .welcome-screen h2 {
-      font-size: 28px;
-    }
-  
-    .welcome-screen p {
-      font-size: 18px;
-    }
-  
-    button {
-      font-size: 16px;
-      width: 70%;
-    }
+    padding: 20px;
   }
 
-  .forecast-section {
-    margin: 20px;
+  .welcome-screen h2 {
+    font-size: 28px;
   }
-  
-  .forecast-item {
-    margin-bottom: 10px;
+
+  .welcome-screen p {
+    font-size: 18px;
   }
-  
-  .forecast-item p {
-    margin: 5px 0;
+
+  button {
+    font-size: 16px;
+    width: 70%;
   }
-  
+}
+
+.forecast-section {
+  margin: 20px;
+}
+
+.forecast-item {
+  margin-bottom: 10px;
+}
+
+.forecast-item p {
+  margin: 5px 0;
+}
+
+#forecast-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+#forecast-table th,
+#forecast-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+#forecast-table th {
+  background-color: #f2f2f2;
+  color: #333;
+}
