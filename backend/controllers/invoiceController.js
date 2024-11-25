@@ -66,7 +66,7 @@ exports.getExpensesPerMonth = async (req, res) => {
   try {
     const { username } = req.query;
     const userId = await User.findByUsername(username);
-    const results = await Invoice.getExpensesPerMonth(userId);
+    const results = await Invoice.getExpensesPerMonth(userId.id);
     res.json(results);
   } catch (error) {
     console.error('Erro ao obter dados das despesas:', error);
@@ -79,7 +79,11 @@ exports.getExpensesPerMonth = async (req, res) => {
 exports.getFutureExpenses = async (req, res) => {
   try {
     // Obtém os dados históricos das faturas
-    const historicalData = await Invoice.getExpensesPerMonth();
+    const { username } = req.query;
+    console.log("username chegando", username);
+    const userId = await User.findByUsername(username);
+    console.log("teste userid", userId);
+    const historicalData = await Invoice.getExpensesPerMonth(userId.id);
     console.log("historical data = ", historicalData);
 
     // Obtém a taxa de inflação atual

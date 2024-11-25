@@ -79,7 +79,6 @@ function extractEnergyOperator() {
 async function extractUserId(username) {
   try {
     const userId = await User.findByUsername(username);
-    console.log(userId.id);
     return userId.id;
   } catch (error) {
     console.error('Erro ao buscar ID do usuário:', error.message);

@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Função para lidar com o login
   async function handleLogin(event) {
     event.preventDefault();
-
     const username = document.getElementById("usuario").value;
     const password = document.getElementById("senha").value;
 
@@ -211,12 +210,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.getElementById('show-forecast-btn').addEventListener('click', async function () {
     try {
-      const response = await fetch(`http://${apiurl}/api/future-expenses`, {
+      const username = document.getElementById("usuario").value;
+      console.log("username indo", username);
+      const response = await fetch(`http://${apiurl}/api/future-expenses?username=${username}`, {
         headers: {},
       });
 
       const data = await response.json();
-      console.log(response.ok);
 
       if (response.ok) {
         displayForecast(data);
