@@ -66,8 +66,8 @@ function extractTotalAmount(text) {
 
 function extractConsumption(text) {
   const match = text.match(/^KWH.*$/m);
-  const value = match[0].match(/\b\d+,\d{3}\b/)
-  return value ? value[0] : null;
+  const value = match[0].match(/KWH(\d+,\d{3})/)
+  return parseFloat(value[1].replace(",", "."));
 }
 
 function extractEnergyOperator(text) {
