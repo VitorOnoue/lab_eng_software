@@ -89,7 +89,7 @@ app.post("/api/upload-pdf", upload.array("pdfs"), async (req, res) => {
             }
             resolve(results); // Resolve a Promise com os resultados
           }
-        );
+        );f
       });
     } catch (error) {
       throw error;

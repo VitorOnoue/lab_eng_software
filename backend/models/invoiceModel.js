@@ -5,19 +5,23 @@ const db = require('../config/db');
 class Invoice {
   static async create(data) {
     const query = `
-      INSERT INTO invoices (invoice_number, customer_name, invoice_date, due_date, total_amount, consumption, energy_operator, taxes, other_charges)
+      INSERT INTO invoices (invoice_number, customer_name, invoice_date, due_date, total_amount, energy_operator, user_id)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
+
+    // INSERT INTO invoices (invoice_number, customer_name, invoice_date, due_date, total_amount, consumption, energy_operator, taxes, other_charges)
+    //   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+
     const values = [
       data.invoiceNumber,
       data.customerName,
       data.invoiceDate,
       data.dueDate,
       data.totalAmount,
-      data.consumption,
+      // data.consumption,
       data.energyOperator,
-      data.taxes,
-      data.otherCharges
+      // data.taxes,
+      14,
     ];
 
     return new Promise((resolve, reject) => {
