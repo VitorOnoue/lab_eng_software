@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS invoices (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  invoice_number VARCHAR(255) NOT NULL UNIQUE,
+  invoice_number VARCHAR(255) NOT NULL,
   customer_name VARCHAR(255) NOT NULL,
   invoice_date DATE NOT NULL,
   due_date DATE NOT NULL,

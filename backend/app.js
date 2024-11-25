@@ -89,7 +89,8 @@ app.post("/api/upload-pdf", upload.array("pdfs"), async (req, res) => {
             }
             resolve(results); // Resolve a Promise com os resultados
           }
-        );f
+        );
+        f
       });
     } catch (error) {
       throw error;
@@ -101,16 +102,6 @@ app.post("/api/upload-pdf", upload.array("pdfs"), async (req, res) => {
     res.json({
       message: "Dados dos PDFs salvos com sucesso!"
     });
-    const response = await fetch(`http://${apiurl}/api/expenses-per-month`, {
-      headers: {},
-    });
-    const data = await response.json();
-
-    if (response.ok) {
-      renderChart(data);
-    } else {
-      console.error("Erro ao obter dados das despesas:", data.message);
-    }
   } catch (err) {
     res
       .status(500)
