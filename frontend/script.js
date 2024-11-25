@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ).innerText = `Bem-vindo, ${username}!`;
 
         // Atualiza o gráfico
-        await fetchAndRenderChart();
+        await fetchAndRenderChart(username);
       } else {
         alert(data.message);
       }
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const username = document.getElementById("usuario").value;
     formData.append("username", username);
     try {
-      
+
       const response = await fetch(`http://${apiurl}/api/upload-pdf`, {
         method: "POST",
         headers: {},
@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (response.ok) {
         alert("PDFs enviados e processados com sucesso!");
         // Atualiza o gráfico após o upload
-        await fetchAndRenderChart();
+        await fetchAndRenderChart(username);
       } else {
         alert(data.message || "Erro ao enviar os PDFs");
       }
@@ -126,9 +126,9 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   // Função para buscar dados e renderizar o gráfico
-  async function fetchAndRenderChart() {
+  async function fetchAndRenderChart(username) {
     try {
-      const response = await fetch(`http://${apiurl}/api/expenses-per-month`, {
+      const response = await fetch(`http://${apiurl}/api/expenses-per-month?username=${username}`, {
         headers: {},
       });
       const data = await response.json();

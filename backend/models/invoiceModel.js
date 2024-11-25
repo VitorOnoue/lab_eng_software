@@ -33,18 +33,19 @@ class Invoice {
     });
   }
 
-  static async getExpensesPerMonth() {
+  static async getExpensesPerMonth(userId) {
     const query = `
       SELECT 
         DATE_FORMAT(invoice_date, '%Y-%m') as month,
         SUM(total_amount) as total_expenses,
         SUM(consumption) as total_consumption
       FROM invoices
+      WHERE user_id = ?
       GROUP BY month
       ORDER BY month;
     `;
     return new Promise((resolve, reject) => {
-      db.query(query, (err, results) => {
+      db.query(query, [userId], (err, results) => {
         if (err) return reject(err);
         resolve(results);
       });

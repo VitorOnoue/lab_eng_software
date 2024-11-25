@@ -5,6 +5,7 @@ const {
 const {
   getCurrentInflationRate
 } = require('../utils/inflationApi');
+const User = require('../models/userModels');
 
 // Upload e processamento de PDFs
 exports.uploadPdf = async (req, res) => {
@@ -22,7 +23,6 @@ exports.uploadPdf = async (req, res) => {
 
     try {
       const extractedData = await extractDataFromPdf(buffer, username);
-      console.log(extractedData.userId);
 
       if (
         !extractedData.invoiceNumber ||
@@ -64,7 +64,9 @@ exports.uploadPdf = async (req, res) => {
 // Obter despesas por mês
 exports.getExpensesPerMonth = async (req, res) => {
   try {
-    const results = await Invoice.getExpensesPerMonth();
+    const { username } = req.query;
+    const userId = await User.findByUsername(username);
+    const results = await Invoice.getExpensesPerMonth(userId);
     res.json(results);
   } catch (error) {
     console.error('Erro ao obter dados das despesas:', error);
